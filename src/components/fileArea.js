@@ -882,7 +882,7 @@ export default function FileArea() {
                 px: 2,
               }}
               onClick={() => {
-                navigate("/dashboard");
+                navigate("/");
               }}
             >
               <ListItemIcon
@@ -910,7 +910,7 @@ export default function FileArea() {
                 px: 2,
               }}
               onClick={() => {
-                navigate("/");
+                navigate("/calendar");
               }}
             >
               <ListItemIcon
@@ -974,10 +974,10 @@ export default function FileArea() {
       >
         <Typography paragraph sx={{ fontFamily: "Nunito Sans, sans-serif" }}>
           <Routes>
-            <Route path="/*" element={<CalendarPage />} />
-            <Route path="/people/*" element={<AllDetails />} />
-            <Route path="/register/*" element={<Register />} />
-            <Route path="/dashboard/*" element={<DashboardSection />} />
+            <Route path="/calendar" element={<CalendarPage />} />
+            <Route path="/people" element={<AllDetails />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/" element={<DashboardSection />} />
           </Routes>
         </Typography>
       </Box>

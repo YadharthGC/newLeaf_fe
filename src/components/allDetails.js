@@ -30,6 +30,7 @@ import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import "video-react/dist/video-react.css";
 import { Player } from "video-react";
+import { renderhost } from "../nodeLink";
 
 export default function AllDetails() {
   const videoSrc = "https://www.youtube.com/watch?v=lVJLNsLNnWs";
@@ -93,7 +94,7 @@ export default function AllDetails() {
   const handleGetData = async () => {
     try {
       await axios
-        .get("http://localhost:3001/ablelyf/getData")
+        .get(`${renderhost}/getData`)
         .then((res) => {
           console.log(res);
           setShowUsers(res.data.message);
@@ -107,7 +108,7 @@ export default function AllDetails() {
   const handleDeleteData = async (dataObj) => {
     try {
       await axios
-        .post("http://localhost:3001/ablelyf/deleteId", dataObj)
+        .post(`${renderhost}/ablelyf/deleteId`, dataObj)
         .then((res) => {
           let users = showUsers.filter(
             (data) => data["_id"] !== dataObj["_id"]

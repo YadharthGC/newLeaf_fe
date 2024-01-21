@@ -31,6 +31,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { funSelectCandidate } from "../reactRedux/action";
 import axios from "axios";
 import { sampAll } from "../calendarSample";
+import { renderhost } from "../nodeLink";
 
 export default function Register() {
   const [type, setType] = useState("");
@@ -199,7 +200,7 @@ export default function Register() {
   let handleSubmitApi = async (dataObj) => {
     try {
       await axios
-        .post(`http://localhost:3001/ablelyf/add`, {
+        .post(`${renderhost}/ablelyf/add`, {
           dataObj: dataObj,
           actions: selector.name ? "Edit" : "",
         })
