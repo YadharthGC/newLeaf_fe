@@ -124,3 +124,7 @@
 #uploadingBtn {
   margin-left: 1%;
 }
+#uploadingBtnTrue {
+  margin-left: 1%;
+  background-color: green !important;
+}

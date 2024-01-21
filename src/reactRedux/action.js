@@ -1,7 +1,13 @@
 export const funSelectCandidate = (data) => {
-  console.log(data);
   return {
     type: "SELECTCANDIDATE",
+    payload: data,
+  };
+};
+
+export const funEdit = (data) => {
+  return {
+    type: "SETEDIT",
     payload: data,
   };
 };

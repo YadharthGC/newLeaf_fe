@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Avatar,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Avatar, TextField } from "@mui/material";
 import "../CSS/allDetails.css";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,26 +8,20 @@ import VideocamIcon from "@mui/icons-material/Videocam";
 import VideoCameraBackIcon from "@mui/icons-material/VideoCameraBack";
 import LightModeIcon from "@mui/icons-material/LightMode";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
-import { sampAll } from "../calendarSample";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import { useNavigate } from "react-router-dom";
-import { funSelectCandidate } from "../reactRedux/action";
-import { useDispatch, useSelector } from "react-redux";
+import { funEdit, funSelectCandidate } from "../reactRedux/action";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-// import VideoPlayer from "react-video-js-player";
-import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import "video-react/dist/video-react.css";
 import { Player } from "video-react";
 import { renderhost } from "../nodeLink";
 
 export default function AllDetails() {
-  const videoSrc = "https://www.youtube.com/watch?v=lVJLNsLNnWs";
-  const selector = useSelector((state) => state);
   const dispatch = useDispatch();
   // const [users, setUsers] = useState(sampAll);
   const [showUsers, setShowUsers] = useState([]);
@@ -42,22 +29,12 @@ export default function AllDetails() {
   const [searchUser, setSearchUser] = useState("");
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
-  const [videoModal, setVideoModal] = useState(false);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const videoRef = React.useRef(null);
-  const playerRef = React.useRef(null);
   const [showSrc, setShowSrc] = useState("");
-  // const {options, onReady} = props;
 
   useEffect(() => {
-    // const myModal = document.getElementById("myModal");
-    // const myInput = document.getElementById("myInput");
-
-    // myModal.addEventListener("shown.bs.modal", () => {
-    //   myInput.focus();
-    // });
     if (!searchUser) {
       let getDataCall = async () => {
         await handleGetData();
@@ -108,7 +85,7 @@ export default function AllDetails() {
   const handleDeleteData = async (dataObj) => {
     try {
       await axios
-        .post(`${renderhost}/ablelyf/deleteId`, dataObj)
+        .post(`${renderhost}/deleteId`, dataObj)
         .then((res) => {
           let users = showUsers.filter(
             (data) => data["_id"] !== dataObj["_id"]
@@ -188,7 +165,7 @@ export default function AllDetails() {
             className="attendanceTherapists"
             blink={blink}
             onClick={() => {
-              handleBlink();
+              setBlink("Therapists");
             }}
           >
             Therapists
@@ -197,7 +174,7 @@ export default function AllDetails() {
             className="attendanceStudents"
             blink={blink}
             onClick={() => {
-              handleBlink();
+              setBlink("Students");
             }}
           >
             Students
@@ -265,10 +242,7 @@ export default function AllDetails() {
                           <input type="checkbox" />
                         </div> */}
                           <div className="conAavatar">
-                            <Avatar
-                              alt="Cindy Baker"
-                              src="/static/images/avatar/3.jpg"
-                            />
+                            <Avatar alt="Cindy Baker" src={data?.images[0]} />
                           </div>
                           <div className="conAtext">{data.name}</div>
                           {blink !== "Therapists" ? (
@@ -317,6 +291,7 @@ export default function AllDetails() {
                           <ModeEditIcon
                             id="editIcon"
                             onClick={() => {
+                              dispatch(funEdit(true));
                               dispatch(funSelectCandidate(data));
                               navigate("/register");
                             }}

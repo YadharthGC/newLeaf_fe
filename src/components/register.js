@@ -2,24 +2,20 @@ import {
   Avatar,
   Button,
   FormControl,
-  FormControlLabel,
-  FormLabel,
   InputLabel,
   MenuItem,
-  Radio,
-  RadioGroup,
   Select,
   TextField,
 } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 import "../CSS/register.css";
 import NoPhotographyOutlinedIcon from "@mui/icons-material/NoPhotographyOutlined";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import FileUploadIcon from "@mui/icons-material/FileUpload";
+// import FileUploadIcon from "@mui/icons-material/FileUpload";
 import { styled } from "@mui/material/styles";
 // import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -27,14 +23,12 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../fireBase";
 import dayjs from "dayjs";
 import blankProfile from "../images/blankProfile.jpg";
-import { useDispatch, useSelector } from "react-redux";
-import { funSelectCandidate } from "../reactRedux/action";
+import { useSelector } from "react-redux";
 import axios from "axios";
-import { sampAll } from "../calendarSample";
 import { renderhost } from "../nodeLink";
 
 export default function Register() {
-  const [type, setType] = useState("");
+  // const [type, setType] = useState("");
   const [blink, setBlink] = useState("Therapists");
   const [showCam, setShowCam] = useState(false);
   const webcamRef = useRef(null);
@@ -46,35 +40,30 @@ export default function Register() {
   const [dob, setDob] = useState("");
   const [employeeID, setEmployeeID] = useState("");
   const [shift, setShift] = useState("");
-  const selector = useSelector((state) => state?.candidateReducer?.candidate);
-  const dispatch = useDispatch();
+  const selector = useSelector((state) => state?.candidateReducer);
+  const { candidate, edit } = selector;
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    // let demApi = axios
-    //   .post(`http://localhost:3001/ablelyf/dem`, { sampAll })
-    //   .then((res) => console.log(res))
-    //   .catch((err) => console.log(err));
     setStatus(false);
   }, [status]);
 
   useEffect(() => {
-    if (selector.name) {
-      setBlink(selector?.role === "Therapists" ? "Therapists" : "Students");
-
-      console.log(selector, selector.name);
-      setName(selector.name);
-      setGender(selector.gender);
-      setDob(selector.dob);
-      setEmployeeID(selector.employeeID);
-      setShift(selector.shift);
-      setEncode(selector.images);
-      setVideoUpload(selector.video);
+    if (edit) {
+      setBlink(candidate?.role === "Therapists" ? "Therapists" : "Students");
+      setName(candidate.name);
+      setGender(candidate.gender);
+      setDob(candidate.dob);
+      setEmployeeID(candidate.employeeID);
+      setShift(candidate.shift);
+      setEncode(candidate.images);
+      setVideoUpload(candidate.video);
     }
   }, []);
 
   useEffect(() => {
-    if (!selector.name) {
+    if (!edit) {
       setName("");
       setGender("");
       setDob("");
@@ -96,18 +85,6 @@ export default function Register() {
     whiteSpace: "nowrap",
     width: 1,
   });
-
-  const handleBlink = () => {
-    try {
-      if (blink === "Therapists") {
-        setBlink("Students");
-      } else {
-        setBlink("Therapists");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   const handleShowCam = () => {
     try {
@@ -159,11 +136,10 @@ export default function Register() {
         () => {
           console.log("success");
           getDownloadURL(uploadTask.snapshot.ref)
-            .then((uri) => {
+            .then(async (uri) => {
               console.log(uri);
               dataObj.video = uri;
-              console.log(dataObj);
-              handleSubmitApi(dataObj);
+              await handleSubmitApi(dataObj);
             })
             .catch((er) => console.log(er));
         }
@@ -175,22 +151,46 @@ export default function Register() {
 
   const handleSubmit = async () => {
     try {
+      if (!name || !dob || !gender || encode.length !== 3) {
+        alert("Fill all the neccessary fields");
+        return;
+      }
+
       let dataObj = {
-        ...selector,
+        ...candidate,
         name: name,
         dob: dob,
         gender: gender,
         images: encode,
         role: blink,
       };
+
       if (blink === "Therapists") {
+        if (!employeeID) {
+          alert("Fill all the neccessary fields");
+          return;
+        }
         dataObj.employeeID = employeeID;
-        await handleSubmitApi(dataObj, selector.name ? "Edit" : "");
+        await handleSubmitApi(dataObj, edit ? "Edit" : "");
       } else {
-        // let videoURL = await handleUpload();
+        if (!shift) {
+          alert("Fill all the neccessary fields");
+          return;
+        }
+
         dataObj.shift = shift;
-        dataObj.employeeID = dataObj.length + 2;
-        await handleUpload(dataObj);
+        if (!edit) {
+          dataObj.employeeID = Math.random(10);
+        }
+
+        if (edit && candidate.video === videoUpload) {
+          console.log("samevideo");
+          dataObj.video = videoUpload;
+          await handleSubmitApi(dataObj);
+        } else {
+          console.log("newVideo");
+          await handleUpload(dataObj);
+        }
       }
     } catch (err) {
       console.log(err);
@@ -200,9 +200,9 @@ export default function Register() {
   let handleSubmitApi = async (dataObj) => {
     try {
       await axios
-        .post(`${renderhost}/ablelyf/add`, {
+        .post(`${renderhost}/add`, {
           dataObj: dataObj,
-          actions: selector.name ? "Edit" : "",
+          actions: edit ? "Edit" : "",
         })
         .then((res) => {
           console.log(res);
@@ -213,12 +213,7 @@ export default function Register() {
       console.log(err);
     }
   };
-  let handleEditApi = async () => {
-    try {
-    } catch (err) {
-      console.log(err);
-    }
-  };
+
   const videoConstraints = {
     width: 600,
     height: 440,
@@ -228,7 +223,7 @@ export default function Register() {
   return (
     <div style={{ height: "100%" }}>
       <div className="heading">
-        <div className="headTitle">{selector.name ? "Edit" : "Register"} </div>
+        <div className="headTitle">{edit ? "Edit" : "Register"} </div>
         <div className="adminSec">
           <span className="adminText">Welcome Admin</span>
           <span className="AvatarIcon">
@@ -238,12 +233,12 @@ export default function Register() {
       </div>
       <div className="registerSection">
         <div className="attendanceTitle">
-          {!selector.name ? (
+          {!edit ? (
             <span
               className="attendanceTherapists"
               blink={blink}
               onClick={() => {
-                handleBlink();
+                setBlink("Therapists");
               }}
             >
               Therapists
@@ -251,12 +246,12 @@ export default function Register() {
           ) : (
             ""
           )}
-          {!selector.name ? (
+          {!edit ? (
             <span
               className="attendanceStudents"
               blink={blink}
               onClick={() => {
-                handleBlink();
+                setBlink("Students");
               }}
             >
               Students
@@ -264,13 +259,13 @@ export default function Register() {
           ) : (
             ""
           )}
-          {selector.role && selector.role === "Students" ? (
+          {candidate.role && candidate.role === "Students" ? (
             <span
               className="attendanceStudents"
               style={{ marginLeft: "0%" }}
               blink={blink}
               onClick={() => {
-                handleBlink();
+                setBlink("Students");
               }}
             >
               Students
@@ -278,12 +273,12 @@ export default function Register() {
           ) : (
             ""
           )}
-          {selector.role && selector.role === "Therapists" ? (
+          {candidate.role && candidate.role === "Therapists" ? (
             <span
               className="attendanceTherapists"
               blink={blink}
               onClick={() => {
-                handleBlink();
+                setBlink("Therapists");
               }}
             >
               Therapists
@@ -293,7 +288,7 @@ export default function Register() {
           )}
         </div>
         <div className="titleNew">
-          {selector.name ? (
+          {edit ? (
             <span className="titleNewText">
               {blink === "Therapists"
                 ? "Edit Therapists Details"
@@ -347,21 +342,21 @@ export default function Register() {
             <div className="regisTitle">{blink} details</div>
             <div className="regisImgs">
               <div className="imgA">
-                {encode.length && encode[0] ? (
+                {encode?.length && encode[0] ? (
                   <img className="demoImg" src={encode[0]} alt="demo" />
                 ) : (
                   <img className="demoImg" src={blankProfile} alt="demo" />
                 )}
               </div>
               <div className="imgB">
-                {encode.length && encode[1] ? (
+                {encode?.length && encode[1] ? (
                   <img className="demoImg" src={encode[1]} alt="demo" />
                 ) : (
                   <img className="demoImg" src={blankProfile} alt="demo" />
                 )}
               </div>
               <div className="imgC">
-                {encode.length && encode[2] ? (
+                {encode?.length && encode[2] ? (
                   <img className="demoImg" src={encode[2]} alt="demo" />
                 ) : (
                   <img className="demoImg" src={blankProfile} alt="demo" />
@@ -481,7 +476,8 @@ export default function Register() {
                       component="label"
                       variant="contained"
                       startIcon={<CloudUploadIcon />}
-                      id="uploadingBtn"
+                      id={videoUpload ? "uploadingBtnTrue" : "uploadingBtn"}
+                      // setVideo={videoUpload ? true : false}
                     >
                       Upload Video
                       <VisuallyHiddenInput

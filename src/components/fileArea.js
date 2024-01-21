@@ -1,24 +1,12 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Routes,
-  useNavigate,
-} from "react-router-dom";
-import React, { useEffect, useRef, useState } from "react";
-import { styled, useTheme } from "@mui/system";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import React, { useState } from "react";
+import { styled } from "@mui/system";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
-import AppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import List from "@mui/material/List";
-import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -769,7 +757,6 @@ export default function FileArea() {
     },
   });
   const [open, setOpen] = useState(false);
-  const [component, setComponent] = useState("dashboard");
   const navigate = useNavigate();
 
   const handleDrawerOpen = () => {

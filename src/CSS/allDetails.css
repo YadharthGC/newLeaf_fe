@@ -190,3 +190,7 @@
   color: red;
   cursor: pointer;
 }
+#adIcon:hover {
+  cursor: pointer;
+  color: green;
+}

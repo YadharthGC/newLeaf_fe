@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-} from "@mui/material";
+import { Avatar, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import "../CSS/calendar.css";
 import NavigateNextSharpIcon from "@mui/icons-material/NavigateNextSharp";
@@ -13,19 +6,22 @@ import NavigateBeforeSharpIcon from "@mui/icons-material/NavigateBeforeSharp";
 import KeyboardDoubleArrowLeftSharpIcon from "@mui/icons-material/KeyboardDoubleArrowLeftSharp";
 import KeyboardDoubleArrowRightSharpIcon from "@mui/icons-material/KeyboardDoubleArrowRightSharp";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
-import DoneIcon from "@mui/icons-material/Done";
-import CloseIcon from "@mui/icons-material/Close";
-import { sampCal } from "../calendarSample";
-import RemoveIcon from "@mui/icons-material/Remove";
+// import DoneIcon from "@mui/icons-material/Done";
+// import CloseIcon from "@mui/icons-material/Close";
+// import { sampCal, sampAtt } from "../calendarSample";
+// import RemoveIcon from "@mui/icons-material/Remove";
+import axios from "axios";
+import { renderhost } from "../nodeLink";
 
 export default function CalendarPage() {
-  const [users, setUsers] = useState(sampCal);
+  // const [users, setUsers] = useState();
   const [modifyUsers, setModifyUsers] = useState();
   const [displayDays, setDisplayDays] = useState([]);
   const [primaryDate, setPrimaryDate] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [therapistsUser, setTherapistsUser] = useState(false);
   const [studentsUser, setStudentsUser] = useState(false);
+  const [blink, setBlink] = useState("Therapists");
 
   const days = [
     "Sunday",
@@ -39,7 +35,9 @@ export default function CalendarPage() {
 
   useEffect(() => {
     try {
-      setModifyUsers(users);
+      // handleGetDetails();
+      // setModifyUsers(users);
+      handleCreateObj();
       handleSetDays();
     } catch (err) {
       console.log(err);
@@ -53,7 +51,7 @@ export default function CalendarPage() {
           (studentsUser && therapistsUser) ||
           (!studentsUser && !therapistsUser)
         ) {
-          setModifyUsers(users);
+          handleCreateObj();
         } else {
           console.log("e");
           handlecompare();
@@ -70,17 +68,91 @@ export default function CalendarPage() {
       (studentsUser && therapistsUser) ||
       (!studentsUser && !therapistsUser)
     ) {
-      setModifyUsers(users);
+      handleCreateObj();
     } else {
       console.log("e");
       handlecompare();
     }
   }, [studentsUser, therapistsUser]);
 
+  const handleCreateObj = async () => {
+    try {
+      // let arrSam = sampAtt;
+      let arrSam = [];
+      arrSam = await handleGetDetails();
+      console.log(arrSam);
+      let assignObj = [];
+      let commonId = [];
+
+      for (let i = 0; i < arrSam.length; i++) {
+        if (!commonId.includes(arrSam[i].employeeID)) {
+          commonId.push(arrSam[i].employeeID);
+          arrSam[i].attendance = [];
+          arrSam[i].attendance.push({
+            date: arrSam[i].date,
+            status: "present",
+          });
+          assignObj.push(arrSam[i]);
+        } else {
+          let findComon = assignObj.findIndex(
+            (obj) => obj.employeeID === arrSam[i].employeeID
+          );
+          assignObj[findComon].attendance.push({
+            date: arrSam[i].date,
+            status: "present",
+          });
+        }
+      }
+
+      // for (let i = 0; i < arrSam.length; i++) {
+      //   if (!commonId.includes(arrSam[i].employeeID)) {
+      //     commonId.push(arrSam[i].employeeID);
+      //     arrSam[i].attendance = [];
+      //     arrSam[i].attendance.push({
+      //       date: arrSam[i].date,
+      //       status: "present",
+      //     });
+      //     assignObj.push(arrSam[i]);
+      //   } else {
+      //     let findComon = assignObj.findIndex(
+      //       (obj) => obj.employeeID === arrSam[i].employeeID
+      //     );
+      //     assignObj[findComon].attendance.push({
+      //       date: arrSam[i].date,
+      //       status: "present",
+      //     });
+      //   }
+      // }
+      console.log("ASSIGNOBJ", assignObj);
+      // setModifyUsers(assignObj);
+      return assignObj;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleGetDetails = async () => {
+    try {
+      let objData;
+      console.log("yes", `${renderhost}/getAttendance`);
+      await axios
+        .get(`${renderhost}/getAttendance`)
+        .then((res) => {
+          objData = res.data.message;
+          console.log(objData);
+        })
+        .catch((err) => console.log(err));
+      console.log(objData);
+      return objData;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handlecompare = () => {
     try {
       let changeUsers = [];
-
+      let users = handleCreateObj();
       for (let i = 0; i < users.length; i++) {
         if (studentsUser && users[i].role === "S") {
           changeUsers.push(users[i]);
@@ -97,13 +169,7 @@ export default function CalendarPage() {
 
   const handleSetDays = (dateStr) => {
     try {
-      let today,
-        yr,
-        mm,
-        dd,
-        todayStr,
-        studentsPresent = [],
-        studentsAbsent = [];
+      let today, yr, mm, dd, todayStr;
 
       if (!dateStr) {
         today = new Date();
@@ -208,9 +274,9 @@ export default function CalendarPage() {
   const HandleSettingSymbols = (props) => {
     try {
       let propsData = props.data;
-      let propsIndex = props.index;
       let propsForm = props.form;
       let val = propsData.findIndex((obj) => obj.date === propsForm.fulldate);
+
       if (val !== -1) {
         if (propsData[val].status === "present") {
           return (
@@ -257,7 +323,24 @@ export default function CalendarPage() {
         </div>
         <div className="calendarSection">
           <div className="attendanceTitle">
-            <span className="attendanceSpan">Attendance</span>
+            <span
+              className="attendanceTherapists"
+              blink={blink}
+              onClick={() => {
+                setBlink("Therapists");
+              }}
+            >
+              Therapists
+            </span>
+            <span
+              className="attendanceStudents"
+              blink={blink}
+              onClick={() => {
+                setBlink("Students");
+              }}
+            >
+              Students
+            </span>
           </div>
           <div className="filterDiv">
             <div className="filterTitle">Weekly Calendar</div>
@@ -302,7 +385,7 @@ export default function CalendarPage() {
               {displayDays.length &&
                 displayDays[displayDays.length - 1].shortYear}
             </div>
-            <div className="checkboxesDiv">
+            {/* <div className="checkboxesDiv">
               <div className="theDiv">
                 <input
                   type="checkbox"
@@ -323,7 +406,7 @@ export default function CalendarPage() {
                 />
                 <label>Students</label>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="daysNoDiv">
             <div className="searchDiv">
@@ -344,7 +427,7 @@ export default function CalendarPage() {
               />
             </div>
             <div className="daysDiv">
-              {displayDays.length
+              {displayDays?.length
                 ? displayDays.map((data) => {
                     return (
                       <div className="weekNo">
@@ -357,31 +440,39 @@ export default function CalendarPage() {
             </div>
           </div>
           <div className="userAttendance">
-            {displayDays.length && modifyUsers.length
+            {displayDays?.length && modifyUsers?.length
               ? modifyUsers.map((data) => {
-                  return (
-                    <div className="userdaysNoDiv">
-                      <div className="usersearchDiv">
-                        <Avatar
-                          alt="Cindy Baker"
-                          src="/static/images/avatar/3.jpg"
-                        />
-                        <span className="naming">{data.name}</span>
-                      </div>
+                  if (
+                    data.role === blink &&
+                    (!searchUser ||
+                      data.name
+                        .toLowerCase()
+                        .includes(searchUser.toLowerCase()))
+                  ) {
+                    return (
+                      <div className="userdaysNoDiv">
+                        <div className="usersearchDiv">
+                          <Avatar
+                            alt="Cindy Baker"
+                            src="/static/images/avatar/3.jpg"
+                          />
+                          <span className="naming">{data.name}</span>
+                        </div>
 
-                      <div className="userdaysDiv">
-                        {displayDays.map((form, index) => {
-                          return (
-                            <HandleSettingSymbols
-                              data={data.attendance}
-                              form={form}
-                              index={index}
-                            />
-                          );
-                        })}
+                        <div className="userdaysDiv">
+                          {displayDays.map((form, index) => {
+                            return (
+                              <HandleSettingSymbols
+                                data={data.attendance}
+                                form={form}
+                                index={index}
+                              />
+                            );
+                          })}
+                        </div>
                       </div>
-                    </div>
-                  );
+                    );
+                  }
                 })
               : ""}
           </div>
