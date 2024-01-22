@@ -11,7 +11,7 @@ import Brightness4Icon from "@mui/icons-material/Brightness4";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import { useNavigate } from "react-router-dom";
 import { funEdit, funSelectCandidate } from "../reactRedux/action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -22,6 +22,8 @@ import { Player } from "video-react";
 import { renderhost } from "../nodeLink";
 
 export default function AllDetails() {
+  const selector = useSelector((state) => state);
+  const { admin } = selector.candidateReducer;
   const dispatch = useDispatch();
   // const [users, setUsers] = useState(sampAll);
   const [showUsers, setShowUsers] = useState([]);
@@ -123,9 +125,9 @@ export default function AllDetails() {
       <div className="heading">
         <div className="headTitle">PeopleInfo</div>
         <div className="adminSec">
-          <span className="adminText">Welcome Admin</span>
+          <span className="adminText">Welcome {admin}</span>
           <span className="AvatarIcon">
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+            <Avatar alt={admin} src="/static/images/avatar/3.jpg" />
           </span>
         </div>
       </div>

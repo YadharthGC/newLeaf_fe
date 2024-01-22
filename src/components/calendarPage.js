@@ -12,6 +12,8 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 // import RemoveIcon from "@mui/icons-material/Remove";
 import axios from "axios";
 import { renderhost } from "../nodeLink";
+import { useSelector } from "react-redux";
+import { attendanceSample } from "../calendarSample";
 
 export default function CalendarPage() {
   // const [users, setUsers] = useState();
@@ -20,6 +22,8 @@ export default function CalendarPage() {
   const [primaryDate, setPrimaryDate] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [blink, setBlink] = useState("Therapists");
+  const selector = useSelector((state) => state);
+  const { admin } = selector.candidateReducer;
 
   const days = [
     "Sunday",
@@ -33,8 +37,6 @@ export default function CalendarPage() {
 
   useEffect(() => {
     try {
-      // handleGetDetails();
-      // setModifyUsers(users);
       handleCreateObj();
       handleSetDays();
     } catch (err) {
@@ -42,38 +44,16 @@ export default function CalendarPage() {
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   try {
-  //     if (!searchUser) {
-  //       if (
-  //         (studentsUser && therapistsUser) ||
-  //         (!studentsUser && !therapistsUser)
-  //       ) {
-  //         handleCreateObj();
-  //       } else {
-  //         console.log("e");
-  //         handlecompare();
-  //       }
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // }, [searchUser]);
+  const handleCreateObj = () => {
+    try {
+      let attendObj = attendanceSample;
+      setModifyUsers(attendObj);
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-  // useEffect(() => {
-  //   setSearchUser("");
-  //   if (
-  //     (studentsUser && therapistsUser) ||
-  //     (!studentsUser && !therapistsUser)
-  //   ) {
-  //     handleCreateObj();
-  //   } else {
-  //     console.log("e");
-  //     handlecompare();
-  //   }
-  // }, [studentsUser, therapistsUser]);
-
-  const handleCreateObj = async () => {
+  const handleCreateObjB = async () => {
     try {
       // let arrSam = sampAtt;
       let arrSam = [];
@@ -121,7 +101,6 @@ export default function CalendarPage() {
       //     });
       //   }
       // }
-      console.log("ASSIGNOBJ", assignObj);
       // setModifyUsers(assignObj);
       return assignObj;
     } catch (err) {
@@ -295,9 +274,9 @@ export default function CalendarPage() {
         <div className="heading">
           <div className="headTitle">Attendance</div>
           <div className="adminSec">
-            <span className="adminText">Welcome Admin</span>
+            <span className="adminText">Welcome {admin}</span>
             <span className="AvatarIcon">
-              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+              <Avatar alt={admin} src="/static/images/avatar/3.jpg" />
             </span>
           </div>
         </div>

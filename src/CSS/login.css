@@ -17,6 +17,9 @@
   /* font-size: 30px; */
   /* text-decoration: underline; */
 }
+.loginHeading {
+  font-size: 30px;
+}
 .mailSection,
 .passwordSection,
 .submitSection {
@@ -52,4 +55,8 @@
 }
 .accText:hover {
   color: blue;
+}
+.registersSection {
+  margin-top: 10%;
+  text-align: center;
 }

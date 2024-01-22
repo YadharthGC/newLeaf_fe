@@ -4,31 +4,26 @@ import "../CSS/login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { renderhost } from "../nodeLink";
-import { useDispatch } from "react-redux";
-import { funAdmin } from "../reactRedux/action";
 
-export default function LoginPage() {
+export default function RegisterAdmin() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
     try {
+      // console.log(mail, password, port);
       let dataObj = {
         mail: mail,
         password: password,
       };
       await axios
-        .post(`${renderhost}/login`, dataObj)
+        .post(`${renderhost}/registeradmin`, dataObj)
         .then((res) => {
-          console.log(res.data);
-          dispatch(funAdmin(res.data.admin));
-          window.localStorage.setItem("admin", res.data.name);
-          navigate("/filearea/dashboard");
+          console.log(res.data.message);
+          navigate("/");
         })
         .catch((err) => console.log(err));
-      // navigate("/fileArea/dashboard");
     } catch (err) {
       console.log(err);
     }
@@ -37,7 +32,7 @@ export default function LoginPage() {
   return (
     <div className="loginSection">
       <Box id="loginBox">
-        <div className="heading loginHeading">Login</div>
+        <div className="heading loginHeading">Register</div>
         <div className="mailSection">
           <input
             type="text"
@@ -74,10 +69,10 @@ export default function LoginPage() {
           <span
             className="accText"
             onClick={() => {
-              navigate("/register");
+              navigate("/");
             }}
           >
-            Don't have an account?Create a new One
+            Already Have an Account?Login.
           </span>
         </div>
       </Box>

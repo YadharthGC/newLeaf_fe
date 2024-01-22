@@ -1,5 +1,5 @@
 import { Route, Routes, useNavigate } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { styled } from "@mui/system";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -17,6 +17,7 @@ import DashboardOutlinedIcon from "@mui/icons-material/DashboardOutlined";
 import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import ScheduleSendTwoToneIcon from "@mui/icons-material/ScheduleSendTwoTone";
+import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import "../CSS/fileArea.css";
 import CalendarPage from "./calendarPage";
 import AllDetails from "./allDetails";
@@ -25,12 +26,29 @@ import DashboardSection from "./dashboardPage";
 import EntriesPage from "./entriesPage";
 import { handleEmptyValues, themeObj } from "../commonFunctions";
 import { useDispatch } from "react-redux";
+import { funAdmin } from "../reactRedux/action";
+import { Divider } from "@mui/material";
 
 export default function FileArea() {
   const dispatch = useDispatch();
   const theme = createTheme(themeObj);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    try {
+      // window.addEventListener("unload", () => {
+      let admin;
+      if (window?.localStorage?.getItem("admin")) {
+        admin = window?.localStorage?.getItem("admin");
+      }
+      console.log(admin);
+      dispatch(funAdmin(admin));
+      // });
+    } catch (err) {
+      console.log(err);
+    }
+  });
 
   const handleDrawerOpen = () => {
     console.log("eqwegqwyewy");
@@ -95,7 +113,7 @@ export default function FileArea() {
   return (
     <Box sx={{ display: "flex" }}>
       <StyledDrawer id="leftContentComponent" variant="permanent" open={open}>
-        <DrawerHeader>
+        <DrawerHeader sx={{ textAlign: "center" }}>
           {open ? (
             <>
               <span class="material-symbols-outlined" id="spaIcon">
@@ -126,7 +144,7 @@ export default function FileArea() {
             )}
           </IconButton>
         </DrawerHeader>
-        <List>
+        <List sx={{ height: "80%" }}>
           <ListItem
             onClick={() => {
               // setComponent("dashboard");
@@ -256,6 +274,39 @@ export default function FileArea() {
                 id="peopleText"
                 primary={"Students"}
                 sx={{ opacity: open ? 1 : 0, color: "black" }}
+              />
+            </ListItemButton>
+          </ListItem>
+        </List>
+        <Divider />
+        <List>
+          <ListItem key={"dashboard"} disablePadding sx={{ display: "block" }}>
+            <ListItemButton
+              sx={{
+                minHeight: 48,
+                justifyContent: open ? "initial" : "center",
+                px: 2,
+              }}
+              onClick={() => {
+                window.localStorage.removeItem("admin");
+                navigate("/");
+              }}
+            >
+              <ListItemIcon
+                sx={{
+                  minWidth: 0,
+                  mr: open ? 3 : "auto",
+                  justifyContent: "center",
+                  color: "black",
+                }}
+              >
+                <LogoutSharpIcon id="logoutIcon" />
+                {/* <DashboardOutlinedIcon id="dashBoardIcon" /> */}
+              </ListItemIcon>
+              <ListItemText
+                id="dashBoardText"
+                primary={"DashBoard"}
+                sx={{ opacity: open ? 1 : 0, color: "black", fontSize: "30px" }}
               />
             </ListItemButton>
           </ListItem>

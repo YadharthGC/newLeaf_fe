@@ -1,5 +1,5 @@
 import { Avatar, TextField } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ronaldo from "../images/blankProfile.jpg";
 import "../CSS/entries.css";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
@@ -7,21 +7,31 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import NestCamWiredStandIcon from "@mui/icons-material/NestCamWiredStand";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import VideoCameraBackIcon from "@mui/icons-material/VideoCameraBack";
-
 import { funEdit } from "../reactRedux/action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { entrySample } from "../calendarSample";
 
 export default function EntriesPage() {
+  const selector = useSelector((state) => state);
+  const { admin } = selector.candidateReducer;
   const dispatch = useDispatch();
   const [blink, setBlink] = useState("Therapists");
+  const [users, setUsers] = useState([]);
+  const [searchUser, setSearchUser] = useState("");
+
+  useEffect(() => {
+    console.log(entrySample);
+    setUsers(entrySample);
+  }, []);
+
   return (
     <>
       <div className="heading">
         <div className="headTitle">Entries</div>
         <div className="adminSec">
-          <span className="adminText">Welcome Admin</span>
+          <span className="adminText">Welcome {admin}</span>
           <span className="AvatarIcon">
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+            <Avatar alt={admin} src="/static/images/avatar/3.jpg" />
           </span>
         </div>
       </div>
@@ -52,15 +62,9 @@ export default function EntriesPage() {
               id="standard-basic"
               label="Search"
               variant="standard"
-              // value={searchUser}
+              value={searchUser}
               onChange={(e) => {
-                // setSearchUser(e.target.value);
-              }}
-              onKeyUp={(e) => {
-                console.log(e);
-                if (e.code === "Enter") {
-                  // handleSearchUser();
-                }
+                setSearchUser(e.target.value);
               }}
             />
           </div>
@@ -76,350 +80,54 @@ export default function EntriesPage() {
             <div className="headE entry">Actions</div>
           </div>
           <div className="allTableBody">
-            <div className="bodyPart">
-              <div className="conA entry">
-                <img alt="Cindy Baker" src={ronaldo} className="entryUserImg" />
-                {blink !== "Therapists" ? (
-                  <div className="conAvideocon">
-                    <VideoCameraBackIcon
-                      id="adIcon"
-                      onClick={() => {
-                        // handleOpen();
-                        // setShowSrc(data.video);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="conB entry">Hari Yadharth</div>
-              <div className="conC entry">123456789</div>
-              <div className="conD entry">
-                <div>11.15pm</div>
-                <div>Jan 6 2000</div>
-              </div>
+            {users?.length
+              ? users.map((data) => {
+                  if (
+                    data.role === blink &&
+                    (!searchUser ||
+                      data.name
+                        .toLowerCase()
+                        .includes(searchUser.toLowerCase()))
+                  ) {
+                    return (
+                      <div className="bodyPart">
+                        <div className="conA entry">
+                          <img
+                            alt="Cindy Baker"
+                            src={ronaldo}
+                            className="entryUserImg"
+                          />
+                        </div>
+                        <div className="conB entry">{data.name}</div>
+                        <div className="conC entry">123456789</div>
+                        <div className="conD entry">
+                          <div>{data.time}</div>
+                          <div>{data.date}</div>
+                        </div>
 
-              <div className="conE entry">
-                <NestCamWiredStandIcon id="ipIcon" />
-                <VideocamIcon id="webIcon" />
-                <ModeEditIcon
-                  id="editIcon"
-                  onClick={() => {
-                    dispatch(funEdit(true));
-                    // dispatch(funSelectCandidate(data));
-                    // navigate("/register");
-                  }}
-                />
-                <DeleteIcon
-                  id="delIcon"
-                  onClick={() => {
-                    // handleDeleteData(data);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="bodyPart">
-              <div className="conA entry">
-                <img alt="Cindy Baker" src={ronaldo} className="entryUserImg" />
-                {blink !== "Therapists" ? (
-                  <div className="conAvideocon">
-                    <VideoCameraBackIcon
-                      id="adIcon"
-                      onClick={() => {
-                        // handleOpen();
-                        // setShowSrc(data.video);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="conB entry">Hari Yadharth</div>
-              <div className="conC entry">123456789</div>
-              <div className="conD entry">
-                <div>11.15pm</div>
-                <div>Jan 6 2000</div>
-              </div>
-
-              <div className="conE entry">
-                <NestCamWiredStandIcon id="ipIcon" />
-                <VideocamIcon id="webIcon" />
-                <ModeEditIcon
-                  id="editIcon"
-                  onClick={() => {
-                    dispatch(funEdit(true));
-                    // dispatch(funSelectCandidate(data));
-                    // navigate("/register");
-                  }}
-                />
-                <DeleteIcon
-                  id="delIcon"
-                  onClick={() => {
-                    // handleDeleteData(data);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="bodyPart">
-              <div className="conA entry">
-                <img alt="Cindy Baker" src={ronaldo} className="entryUserImg" />
-                {blink !== "Therapists" ? (
-                  <div className="conAvideocon">
-                    <VideoCameraBackIcon
-                      id="adIcon"
-                      onClick={() => {
-                        // handleOpen();
-                        // setShowSrc(data.video);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="conB entry">Hari Yadharth</div>
-              <div className="conC entry">123456789</div>
-              <div className="conD entry">
-                <div>11.15pm</div>
-                <div>Jan 6 2000</div>
-              </div>
-
-              <div className="conE entry">
-                <NestCamWiredStandIcon id="ipIcon" />
-                <VideocamIcon id="webIcon" />
-                <ModeEditIcon
-                  id="editIcon"
-                  onClick={() => {
-                    dispatch(funEdit(true));
-                    // dispatch(funSelectCandidate(data));
-                    // navigate("/register");
-                  }}
-                />
-                <DeleteIcon
-                  id="delIcon"
-                  onClick={() => {
-                    // handleDeleteData(data);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="bodyPart">
-              <div className="conA entry">
-                <img alt="Cindy Baker" src={ronaldo} className="entryUserImg" />
-                {blink !== "Therapists" ? (
-                  <div className="conAvideocon">
-                    <VideoCameraBackIcon
-                      id="adIcon"
-                      onClick={() => {
-                        // handleOpen();
-                        // setShowSrc(data.video);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="conB entry">Hari Yadharth</div>
-              <div className="conC entry">123456789</div>
-              <div className="conD entry">
-                <div>11.15pm</div>
-                <div>Jan 6 2000</div>
-              </div>
-
-              <div className="conE entry">
-                <NestCamWiredStandIcon id="ipIcon" />
-                <VideocamIcon id="webIcon" />
-                <ModeEditIcon
-                  id="editIcon"
-                  onClick={() => {
-                    dispatch(funEdit(true));
-                    // dispatch(funSelectCandidate(data));
-                    // navigate("/register");
-                  }}
-                />
-                <DeleteIcon
-                  id="delIcon"
-                  onClick={() => {
-                    // handleDeleteData(data);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="bodyPart">
-              <div className="conA entry">
-                <img alt="Cindy Baker" src={ronaldo} className="entryUserImg" />
-                {blink !== "Therapists" ? (
-                  <div className="conAvideocon">
-                    <VideoCameraBackIcon
-                      id="adIcon"
-                      onClick={() => {
-                        // handleOpen();
-                        // setShowSrc(data.video);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="conB entry">Hari Yadharth</div>
-              <div className="conC entry">123456789</div>
-              <div className="conD entry">
-                <div>11.15pm</div>
-                <div>Jan 6 2000</div>
-              </div>
-
-              <div className="conE entry">
-                <NestCamWiredStandIcon id="ipIcon" />
-                <VideocamIcon id="webIcon" />
-                <ModeEditIcon
-                  id="editIcon"
-                  onClick={() => {
-                    dispatch(funEdit(true));
-                    // dispatch(funSelectCandidate(data));
-                    // navigate("/register");
-                  }}
-                />
-                <DeleteIcon
-                  id="delIcon"
-                  onClick={() => {
-                    // handleDeleteData(data);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="bodyPart">
-              <div className="conA entry">
-                <img alt="Cindy Baker" src={ronaldo} className="entryUserImg" />
-                {blink !== "Therapists" ? (
-                  <div className="conAvideocon">
-                    <VideoCameraBackIcon
-                      id="adIcon"
-                      onClick={() => {
-                        // handleOpen();
-                        // setShowSrc(data.video);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="conB entry">Hari Yadharth</div>
-              <div className="conC entry">123456789</div>
-              <div className="conD entry">
-                <div>11.15pm</div>
-                <div>Jan 6 2000</div>
-              </div>
-
-              <div className="conE entry">
-                <NestCamWiredStandIcon id="ipIcon" />
-                <VideocamIcon id="webIcon" />
-                <ModeEditIcon
-                  id="editIcon"
-                  onClick={() => {
-                    dispatch(funEdit(true));
-                    // dispatch(funSelectCandidate(data));
-                    // navigate("/register");
-                  }}
-                />
-                <DeleteIcon
-                  id="delIcon"
-                  onClick={() => {
-                    // handleDeleteData(data);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="bodyPart">
-              <div className="conA entry">
-                <img alt="Cindy Baker" src={ronaldo} className="entryUserImg" />
-                {blink !== "Therapists" ? (
-                  <div className="conAvideocon">
-                    <VideoCameraBackIcon
-                      id="adIcon"
-                      onClick={() => {
-                        // handleOpen();
-                        // setShowSrc(data.video);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="conB entry">Hari Yadharth</div>
-              <div className="conC entry">123456789</div>
-              <div className="conD entry">
-                <div>11.15pm</div>
-                <div>Jan 6 2000</div>
-              </div>
-
-              <div className="conE entry">
-                <NestCamWiredStandIcon id="ipIcon" />
-                <VideocamIcon id="webIcon" />
-                <ModeEditIcon
-                  id="editIcon"
-                  onClick={() => {
-                    dispatch(funEdit(true));
-                    // dispatch(funSelectCandidate(data));
-                    // navigate("/register");
-                  }}
-                />
-                <DeleteIcon
-                  id="delIcon"
-                  onClick={() => {
-                    // handleDeleteData(data);
-                  }}
-                />
-              </div>
-            </div>
-            <div className="bodyPart">
-              <div className="conA entry">
-                <img alt="Cindy Baker" src={ronaldo} className="entryUserImg" />
-                {blink !== "Therapists" ? (
-                  <div className="conAvideocon">
-                    <VideoCameraBackIcon
-                      id="adIcon"
-                      onClick={() => {
-                        // handleOpen();
-                        // setShowSrc(data.video);
-                      }}
-                    />
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-              <div className="conB entry">Hari Yadharth</div>
-              <div className="conC entry">123456789</div>
-              <div className="conD entry">
-                <div>11.15pm</div>
-                <div>Jan 6 2000</div>
-              </div>
-
-              <div className="conE entry">
-                <NestCamWiredStandIcon id="ipIcon" />
-                <VideocamIcon id="webIcon" />
-                <ModeEditIcon
-                  id="editIcon"
-                  onClick={() => {
-                    dispatch(funEdit(true));
-                    // dispatch(funSelectCandidate(data));
-                    // navigate("/register");
-                  }}
-                />
-                <DeleteIcon
-                  id="delIcon"
-                  onClick={() => {
-                    // handleDeleteData(data);
-                  }}
-                />
-              </div>
-            </div>
+                        <div className="conE entry">
+                          {/* <NestCamWiredStandIcon id="ipIcon" />
+                        <VideocamIcon id="webIcon" /> */}
+                          {/* <ModeEditIcon
+                            id="editIcon"
+                            onClick={() => {
+                              dispatch(funEdit(true));
+                              // dispatch(funSelectCandidate(data));
+                              // navigate("/register");
+                            }}
+                          /> */}
+                          <DeleteIcon
+                            id="delIcon"
+                            onClick={() => {
+                              // handleDeleteData(data);
+                            }}
+                          />
+                        </div>
+                      </div>
+                    );
+                  }
+                })
+              : ""}
           </div>
         </div>
       </div>

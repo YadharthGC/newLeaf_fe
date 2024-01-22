@@ -11,3 +11,10 @@ export const funEdit = (data) => {
     payload: data,
   };
 };
+
+export const funAdmin = (data) => {
+  return {
+    type: "SETADMIN",
+    payload: data,
+  };
+};

@@ -1,17 +1,21 @@
 import { Avatar } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import Grid from "@mui/material/Grid";
 import "../CSS/dashboard.css";
+import { useSelector } from "react-redux";
 
 export default function DashboardSection() {
+  useEffect(() => {}, []);
+  const selector = useSelector((state) => state);
+  const { admin } = selector.candidateReducer;
   return (
     <div>
       <div className="heading">
         <div className="headTitle">DashBoard</div>
         <div className="adminSec">
-          <span className="adminText">Welcome Admin</span>
+          <span className="adminText">Welcome {admin}</span>
           <span className="AvatarIcon">
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+            <Avatar alt={admin} src="/static/images/avatar/3.jpg" />
           </span>
         </div>
       </div>
@@ -19,7 +23,7 @@ export default function DashboardSection() {
         <Grid container columnSpacing={2}>
           <Grid item md={6}>
             <div className="gridItemA">
-              <div className="shiftAdmin">Good Morning,Admin</div>
+              <div className="shiftAdmin">Good Morning,{admin}</div>
               <div className="prettyText">
                 <span className="prettySpan">
                   Welcome to AbleLyf!Manage attendance with ease

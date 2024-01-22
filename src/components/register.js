@@ -40,8 +40,8 @@ export default function Register() {
   const [dob, setDob] = useState("");
   const [employeeID, setEmployeeID] = useState("");
   const [shift, setShift] = useState("");
-  const selector = useSelector((state) => state?.candidateReducer);
-  const { candidate, edit } = selector;
+  const selector = useSelector((state) => state);
+  const { candidate, edit, admin } = selector.candidateReducer;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -224,9 +224,9 @@ export default function Register() {
       <div className="heading">
         <div className="headTitle">{edit ? "Edit" : "Register"} </div>
         <div className="adminSec">
-          <span className="adminText">Welcome Admin</span>
+          <span className="adminText">Welcome {admin}</span>
           <span className="AvatarIcon">
-            <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+            <Avatar alt={admin} src="/static/images/avatar/3.jpg" />
           </span>
         </div>
       </div>
