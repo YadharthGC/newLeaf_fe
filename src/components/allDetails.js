@@ -99,36 +99,6 @@ export default function AllDetails() {
     }
   };
 
-  // const handleSetUser = () => {
-  //   try {
-  //     // if (blink === "Therapists") {
-  //     //   let usersArr = showUsers.filter((data) => {
-  //     //     return data.role === "Therapists";
-  //     //   });
-  //     //   setShowUsers(usersArr);
-  //     // } else {
-  //     //   let usersArr = showUsers.filter((data) => {
-  //     //     return data.role === "Students";
-  //     //   });
-  //     //   setShowUsers(usersArr);
-  //     // }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  const handleBlink = () => {
-    try {
-      if (blink === "Therapists") {
-        setBlink("Students");
-      } else {
-        setBlink("Therapists");
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleSearchUser = () => {
     try {
       console.log(searchUser);

@@ -1,8 +1,7 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React, { useState } from "react";
 import "../CSS/login.css";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -48,6 +47,7 @@ export default function LoginPage() {
             type="password"
             id="passwordText"
             placeholder="Password"
+            val={password}
             onChange={(e) => {
               setPassword(e.target.value);
             }}

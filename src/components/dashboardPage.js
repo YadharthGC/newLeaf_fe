@@ -1,9 +1,7 @@
 import { Avatar } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import Grid from "@mui/material/Grid";
 import "../CSS/dashboard.css";
-import { handleEmptyValues } from "../commonFunctions";
-import { useDispatch } from "react-redux";
 
 export default function DashboardSection() {
   return (

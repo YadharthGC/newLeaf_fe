@@ -19,8 +19,6 @@ export default function CalendarPage() {
   const [displayDays, setDisplayDays] = useState([]);
   const [primaryDate, setPrimaryDate] = useState("");
   const [searchUser, setSearchUser] = useState("");
-  const [therapistsUser, setTherapistsUser] = useState(false);
-  const [studentsUser, setStudentsUser] = useState(false);
   const [blink, setBlink] = useState("Therapists");
 
   const days = [
@@ -41,39 +39,39 @@ export default function CalendarPage() {
       handleSetDays();
     } catch (err) {
       console.log(err);
-    }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    try {
-      if (!searchUser) {
-        if (
-          (studentsUser && therapistsUser) ||
-          (!studentsUser && !therapistsUser)
-        ) {
-          handleCreateObj();
-        } else {
-          console.log("e");
-          handlecompare();
-        }
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  }, [searchUser]);
+  // useEffect(() => {
+  //   try {
+  //     if (!searchUser) {
+  //       if (
+  //         (studentsUser && therapistsUser) ||
+  //         (!studentsUser && !therapistsUser)
+  //       ) {
+  //         handleCreateObj();
+  //       } else {
+  //         console.log("e");
+  //         handlecompare();
+  //       }
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
+  //   }
+  // }, [searchUser]);
 
-  useEffect(() => {
-    setSearchUser("");
-    if (
-      (studentsUser && therapistsUser) ||
-      (!studentsUser && !therapistsUser)
-    ) {
-      handleCreateObj();
-    } else {
-      console.log("e");
-      handlecompare();
-    }
-  }, [studentsUser, therapistsUser]);
+  // useEffect(() => {
+  //   setSearchUser("");
+  //   if (
+  //     (studentsUser && therapistsUser) ||
+  //     (!studentsUser && !therapistsUser)
+  //   ) {
+  //     handleCreateObj();
+  //   } else {
+  //     console.log("e");
+  //     handlecompare();
+  //   }
+  // }, [studentsUser, therapistsUser]);
 
   const handleCreateObj = async () => {
     try {
@@ -144,24 +142,6 @@ export default function CalendarPage() {
         .catch((err) => console.log(err));
       console.log(objData);
       return objData;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handlecompare = () => {
-    try {
-      let changeUsers = [];
-      let users = handleCreateObj();
-      for (let i = 0; i < users.length; i++) {
-        if (studentsUser && users[i].role === "S") {
-          changeUsers.push(users[i]);
-        } else if (therapistsUser && users[i].role === "T") {
-          changeUsers.push(users[i]);
-        }
-      }
-      console.log(changeUsers);
-      setModifyUsers(changeUsers);
     } catch (err) {
       console.log(err);
     }

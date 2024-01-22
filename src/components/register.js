@@ -7,7 +7,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 import "../CSS/register.css";
@@ -54,7 +54,7 @@ export default function Register() {
       setShift(candidate.shift);
       setEncode(candidate.images);
       setVideoUpload(candidate.video);
-    }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -70,7 +70,7 @@ export default function Register() {
       setShift("");
       setEncode([]);
       setVideoUpload("");
-    }
+    } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blink]);
 
   const VisuallyHiddenInput = styled("input")({
