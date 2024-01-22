@@ -203,7 +203,7 @@ export default function AllDetails() {
               id="addUserIcon"
               onClick={() => {
                 dispatch(funSelectCandidate({}));
-                navigate("/register");
+                navigate("register");
               }}
             />
           </div>
@@ -293,7 +293,7 @@ export default function AllDetails() {
                             onClick={() => {
                               dispatch(funEdit(true));
                               dispatch(funSelectCandidate(data));
-                              navigate("/register");
+                              navigate("register");
                             }}
                           />
                           <DeleteIcon

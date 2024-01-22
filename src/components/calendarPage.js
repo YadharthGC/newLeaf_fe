@@ -313,7 +313,7 @@ export default function CalendarPage() {
     <div style={{ height: "100vh" }}>
       <div className="titleSection">
         <div className="heading">
-          <div className="headTitle">Calendar</div>
+          <div className="headTitle">Attendance</div>
           <div className="adminSec">
             <span className="adminText">Welcome Admin</span>
             <span className="AvatarIcon">
