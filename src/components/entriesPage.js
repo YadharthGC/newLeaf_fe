@@ -1,6 +1,6 @@
 import { Avatar, Grid, TextField } from "@mui/material";
 import React, { useState } from "react";
-import ronaldo from "../images/ronPro.jpg";
+import ronaldo from "../images/blankProfile.jpg";
 import "../CSS/entries.css";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import DeleteIcon from "@mui/icons-material/Delete";

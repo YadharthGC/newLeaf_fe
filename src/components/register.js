@@ -7,7 +7,7 @@ import {
   Select,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Webcam from "react-webcam";
 import "../CSS/register.css";
@@ -23,9 +23,9 @@ import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../fireBase";
 import dayjs from "dayjs";
 import blankProfile from "../images/blankProfile.jpg";
-import { useSelector } from "react-redux";
 import axios from "axios";
 import { renderhost } from "../nodeLink";
+import { useSelector } from "react-redux";
 
 export default function Register() {
   // const [type, setType] = useState("");
@@ -42,12 +42,7 @@ export default function Register() {
   const [shift, setShift] = useState("");
   const selector = useSelector((state) => state?.candidateReducer);
   const { candidate, edit } = selector;
-  // const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setStatus(false);
-  }, [status]);
 
   useEffect(() => {
     if (edit) {
@@ -61,6 +56,10 @@ export default function Register() {
       setVideoUpload(candidate.video);
     }
   }, []);
+
+  useEffect(() => {
+    setStatus(false);
+  }, [status]);
 
   useEffect(() => {
     if (!edit) {
@@ -259,7 +258,7 @@ export default function Register() {
           ) : (
             ""
           )}
-          {candidate.role && candidate.role === "Students" ? (
+          {edit && candidate.role && candidate.role === "Students" ? (
             <span
               className="attendanceStudents"
               style={{ marginLeft: "0%" }}
@@ -273,7 +272,7 @@ export default function Register() {
           ) : (
             ""
           )}
-          {candidate.role && candidate.role === "Therapists" ? (
+          {edit && candidate.role && candidate.role === "Therapists" ? (
             <span
               className="attendanceTherapists"
               blink={blink}

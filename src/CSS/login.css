@@ -19,8 +19,7 @@
 }
 .mailSection,
 .passwordSection,
-.submitSection,
-.registerSection {
+.submitSection {
   margin-top: 10%;
   text-align: center;
 }

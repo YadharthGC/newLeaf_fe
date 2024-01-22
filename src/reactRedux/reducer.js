@@ -13,7 +13,7 @@ export const candidateReducer = (state = initialState, action) => {
     case "SETEDIT":
       return {
         ...state,
-        edit: true,
+        edit: action.payload,
       };
     default:
       return state;
