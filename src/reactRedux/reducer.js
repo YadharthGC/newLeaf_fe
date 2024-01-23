@@ -1,5 +1,6 @@
 const initialState = {
   admin: "",
+  adminID: "",
   candidate: {},
   edit: false,
 };
@@ -20,6 +21,11 @@ export const candidateReducer = (state = initialState, action) => {
       return {
         ...state,
         admin: action.payload,
+      };
+    case "SETADMINID":
+      return {
+        ...state,
+        adminID: action.payload,
       };
     default:
       return state;

@@ -26,7 +26,7 @@ import DashboardSection from "./dashboardPage";
 import EntriesPage from "./entriesPage";
 import { handleEmptyValues, themeObj } from "../commonFunctions";
 import { useDispatch } from "react-redux";
-import { funAdmin } from "../reactRedux/action";
+import { funAdmin, funAdminID } from "../reactRedux/action";
 import { Divider } from "@mui/material";
 
 export default function FileArea() {
@@ -38,12 +38,14 @@ export default function FileArea() {
   useEffect(() => {
     try {
       // window.addEventListener("unload", () => {
-      let admin;
+      let admin, adminID;
       if (window?.localStorage?.getItem("admin")) {
         admin = window?.localStorage?.getItem("admin");
+        adminID = window?.localStorage?.getItem("adminID");
       }
       console.log(admin);
       dispatch(funAdmin(admin));
+      dispatch(funAdminID(adminID));
       // });
     } catch (err) {
       console.log(err);
@@ -289,6 +291,7 @@ export default function FileArea() {
               }}
               onClick={() => {
                 window.localStorage.removeItem("admin");
+                window.localStorage.removeItem("adminID");
                 navigate("/");
               }}
             >

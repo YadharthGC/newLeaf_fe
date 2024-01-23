@@ -20,6 +20,7 @@ import "video.js/dist/video-js.css";
 import "video-react/dist/video-react.css";
 import { Player } from "video-react";
 import { renderhost } from "../nodeLink";
+import { sampAll } from "../calendarSample";
 
 export default function AllDetails() {
   const selector = useSelector((state) => state);
@@ -70,7 +71,7 @@ export default function AllDetails() {
     p: 4,
   };
 
-  const handleGetData = async () => {
+  const handleGetData2 = async () => {
     try {
       await axios
         .get(`${renderhost}/getData`)
@@ -79,6 +80,14 @@ export default function AllDetails() {
           setShowUsers(res.data.message);
         })
         .catch((err) => console.log(err));
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleGetData = () => {
+    try {
+      setShowUsers(sampAll);
     } catch (err) {
       console.log(err);
     }
@@ -198,7 +207,7 @@ export default function AllDetails() {
             <div className="headE">Actions</div>
           </div>
           <div className="allTableBody">
-            {showUsers.length
+            {showUsers?.length
               ? showUsers.map((data) => {
                   if (
                     data.role === blink &&
@@ -214,7 +223,7 @@ export default function AllDetails() {
                           <input type="checkbox" />
                         </div> */}
                           <div className="conAavatar">
-                            <Avatar alt="Cindy Baker" src={data?.images[0]} />
+                            <Avatar alt="Cindy Baker" src={data?.photoa} />
                           </div>
                           <div className="conAtext">{data.name}</div>
                           {blink !== "Therapists" ? (

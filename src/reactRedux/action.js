@@ -18,3 +18,10 @@ export const funAdmin = (data) => {
     payload: data,
   };
 };
+
+export const funAdminID = (data) => {
+  return {
+    type: "SETADMINID",
+    payload: data,
+  };
+};
