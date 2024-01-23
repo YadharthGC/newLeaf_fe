@@ -25,6 +25,7 @@ export default function LoginPage() {
           console.log(res.data);
           dispatch(funAdmin(res.data.admin));
           window.localStorage.setItem("admin", res.data.name);
+          window.localStorage.setItem("adminID", res.data.adminID);
           navigate("/filearea/dashboard");
         })
         .catch((err) => console.log(err));

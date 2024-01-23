@@ -26,6 +26,9 @@ import blankProfile from "../images/blankProfile.jpg";
 import axios from "axios";
 import { renderhost } from "../nodeLink";
 import { useSelector } from "react-redux";
+import CloseSharpIcon from "@mui/icons-material/CloseSharp";
+// import * as faceapi from "face-api.js";
+// import {} from "../../public/models"
 
 export default function Register() {
   // const [type, setType] = useState("");
@@ -33,7 +36,11 @@ export default function Register() {
   const [showCam, setShowCam] = useState(false);
   const webcamRef = useRef(null);
   const [videoUpload, setVideoUpload] = useState("");
-  const [encode, setEncode] = useState([]);
+  // const [encode, setEncode] = useState([]);
+  const [photoA, setPhotoA] = useState("");
+  const [photoB, setPhotoB] = useState("");
+  const [photoC, setPhotoC] = useState("");
+
   const [status, setStatus] = useState(false);
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
@@ -41,7 +48,7 @@ export default function Register() {
   const [employeeID, setEmployeeID] = useState("");
   const [shift, setShift] = useState("");
   const selector = useSelector((state) => state);
-  const { candidate, edit, admin } = selector.candidateReducer;
+  const { candidate, edit, admin, adminID } = selector.candidateReducer;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,7 +59,9 @@ export default function Register() {
       setDob(candidate.dob);
       setEmployeeID(candidate.employeeID);
       setShift(candidate.shift);
-      setEncode(candidate.images);
+      setPhotoA(candidate.photoa);
+      setPhotoB(candidate.photob);
+      setPhotoC(candidate.photoc);
       setVideoUpload(candidate.video);
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -68,7 +77,9 @@ export default function Register() {
       setDob("");
       setEmployeeID("");
       setShift("");
-      setEncode([]);
+      setPhotoA("");
+      setPhotoB("");
+      setPhotoC("");
       setVideoUpload("");
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blink]);
@@ -100,14 +111,15 @@ export default function Register() {
   const handleTakePhoto = () => {
     try {
       let imgUrl = webcamRef.current.getScreenshot({});
-      console.log(encode);
-      let imgArr = encode;
-
-      if (imgArr.length === 3) {
-        imgArr.shift();
+      if (photoA === "") {
+        setPhotoA(imgUrl);
+      } else if (photoB === "") {
+        setPhotoB(imgUrl);
+      } else if (photoC === "") {
+        setPhotoC(imgUrl);
+      } else {
+        alert("Got three images");
       }
-      imgArr.push(imgUrl);
-      setEncode(imgArr);
       setStatus(true);
     } catch (err) {
       console.log(err);
@@ -150,7 +162,7 @@ export default function Register() {
 
   const handleSubmit = async () => {
     try {
-      if (!name || !dob || !gender || encode.length !== 3) {
+      if (!name || !dob || !gender || !photoA || !photoB || !photoC) {
         alert("Fill all the neccessary fields");
         return;
       }
@@ -159,9 +171,14 @@ export default function Register() {
         ...candidate,
         name: name,
         dob: dob,
+        admin: admin,
+        adminID: adminID,
         gender: gender,
-        images: encode,
         role: blink,
+        created: new Date(),
+        photoa: photoA,
+        photob: photoB,
+        photoc: photoC,
       };
 
       if (blink === "Therapists") {
@@ -218,6 +235,61 @@ export default function Register() {
     height: 440,
     facingMode: "user",
   };
+
+  let handleRemoveImage = (ind) => {
+    try {
+      console.log(ind);
+      if (ind === 1) {
+        setPhotoA("");
+      } else if (ind === 2) {
+        setPhotoB("");
+      } else if (ind === 3) {
+        setPhotoC("");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  ///////////////////////////////
+  //////////////////////////////
+  // useEffect(() => {
+  //   const loadModels = async () => {
+  //     await faceapi.nets.tinyFaceDetector.loadFromUri("../models");
+  //     // await faceapi.nets.faceLandmark68Net.loadFromUri("/models");
+  //     // await faceapi.nets.faceRecognitionNet.loadFromUri("/models");
+  //   };
+
+  //   const captureWithFaceDetection = async () => {
+  //     const video = webcamRef.current.video;
+
+  //     // Perform face detection
+  //     const detections = await faceapi
+  //       .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
+  //       .withFaceLandmarks()
+  //       .withFaceDescriptors();
+
+  //     // Check if a face is detected
+  //     if (detections.length > 0) {
+  //       // Perform actions like taking a photo when a face is detected
+  //       const canvas = faceapi.createCanvasFromMedia(video);
+  //       faceapi.draw.drawDetections(canvas, detections);
+  //       document.body.append(canvas);
+
+  //       // Capture the photo (you can use a library like html2canvas)
+  //       // const photoDataUrl = canvas.toDataURL('image/jpeg');
+  //       // Perform actions with the captured photo data
+  //     }
+  //   };
+
+  //   // Load face-api.js models and start capturing with face detection
+  //   loadModels().then(() => setInterval(captureWithFaceDetection, 1000));
+
+  //   return () => {
+  //     // Cleanup (e.g., stop capturing)
+  //   };
+  // }, []);
+  //////////////////////////////////////////
+  /////////////////////////////////////////////
 
   return (
     <div style={{ height: "100%" }}>
@@ -305,13 +377,21 @@ export default function Register() {
           <div className="webCamDivA">
             <div className="cameraDiv">
               {showCam ? (
-                <Webcam
-                  id="photoWeb"
-                  audio={false}
-                  screenshotFormat="image/jpeg"
-                  ref={webcamRef}
-                  {...videoConstraints}
-                />
+                <>
+                  <Webcam
+                    crossOrigin="anonymous"
+                    id="photoWeb"
+                    audio={false}
+                    screenshotFormat="image/jpeg"
+                    ref={webcamRef}
+                    {...videoConstraints}
+                  />
+                  {/* <div
+                    id="displayCanvas"
+                    style={{ position: "absolute" }}
+                  ></div> */}
+                  {/* <canvas ref={canvasRef} {...videoConstraints} /> */}
+                </>
               ) : (
                 <div className="blankImg">Turn on Camera</div>
               )}
@@ -341,24 +421,66 @@ export default function Register() {
             <div className="regisTitle">{blink} details</div>
             <div className="regisImgs">
               <div className="imgA">
-                {encode?.length && encode[0] ? (
-                  <img className="demoImg" src={encode[0]} alt="demo" />
+                {photoA ? (
+                  <img className="demoImg presentImg" src={photoA} alt="demo" />
                 ) : (
                   <img className="demoImg" src={blankProfile} alt="demo" />
+                )}
+                {photoA ? (
+                  <div className="closeImgDiv">
+                    <div className="closeImg">
+                      <CloseSharpIcon
+                        id="closeSharpIcon"
+                        onClick={() => {
+                          handleRemoveImage(1);
+                        }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  ""
                 )}
               </div>
               <div className="imgB">
-                {encode?.length && encode[1] ? (
-                  <img className="demoImg" src={encode[1]} alt="demo" />
+                {photoB ? (
+                  <img className="demoImg presentImg" src={photoB} alt="demo" />
                 ) : (
                   <img className="demoImg" src={blankProfile} alt="demo" />
                 )}
+                {photoB ? (
+                  <div className="closeImgDiv">
+                    <div className="closeImg">
+                      <CloseSharpIcon
+                        id="closeSharpIcon"
+                        onClick={() => {
+                          handleRemoveImage(2);
+                        }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
               <div className="imgC">
-                {encode?.length && encode[2] ? (
-                  <img className="demoImg" src={encode[2]} alt="demo" />
+                {photoC ? (
+                  <img className="demoImg presentImg" src={photoC} alt="demo" />
                 ) : (
                   <img className="demoImg" src={blankProfile} alt="demo" />
+                )}
+                {photoC ? (
+                  <div className="closeImgDiv">
+                    <div className="closeImg">
+                      <CloseSharpIcon
+                        id="closeSharpIcon"
+                        onClick={() => {
+                          handleRemoveImage(3);
+                        }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  ""
                 )}
               </div>
             </div>
