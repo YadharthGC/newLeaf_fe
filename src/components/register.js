@@ -205,7 +205,7 @@ export default function Register() {
         })
         .then((res) => {
           console.log(res);
-          navigate("people");
+          navigate("../people");
         })
         .catch((err) => console.log(err));
     } catch (err) {
