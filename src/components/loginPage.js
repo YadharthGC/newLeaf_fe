@@ -22,9 +22,13 @@ export default function LoginPage() {
         .post(`${renderhost}/login`, dataObj)
         .then((res) => {
           console.log(res.data);
-          window.localStorage.setItem("admin", res.data.name);
-          window.localStorage.setItem("adminID", res.data.adminID);
-          navigate("/filearea/dashboard");
+          if (res.data.message !== "No login") {
+            window.localStorage.setItem("admin", res.data.name);
+            window.localStorage.setItem("adminID", res.data.adminID);
+            navigate("/filearea/dashboard");
+          } else {
+            alert("no login found");
+          }
         })
         .catch((err) => console.log(err));
       // navigate("/fileArea/dashboard");
