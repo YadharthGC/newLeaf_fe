@@ -209,7 +209,7 @@ export default function DashboardSection() {
                 </span>
               </div>
               <div className="accountDiv">
-                <span className="accountSpan">Account</span>
+                {/* <span className="accountSpan">Account</span> */}
               </div>
               <div className="twoBoxes">
                 <div className="firstBox">

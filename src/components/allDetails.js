@@ -92,14 +92,6 @@ export default function AllDetails() {
     }
   };
 
-  const handleGetData2 = () => {
-    try {
-      setShowUsers(sampAll.reverse());
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleDeleteData = async (dataObj) => {
     try {
       dispatch(funLoading(true));
@@ -117,29 +109,6 @@ export default function AllDetails() {
           console.log(err);
           dispatch(funLoading(false));
         });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  // const handleDeleteData = async (dataObj) => {
-  //   console.log(dataObj.candidateID);
-  // };
-
-  const handleSearchUser = () => {
-    try {
-      console.log(searchUser);
-
-      let changeUsers = [];
-
-      for (let i = 0; i < showUsers.length; i++) {
-        if (
-          showUsers[i].name.toLowerCase().includes(searchUser.toLowerCase())
-        ) {
-          changeUsers.push(showUsers[i]);
-        }
-      }
-      setShowUsers(changeUsers);
     } catch (err) {
       console.log(err);
     }
