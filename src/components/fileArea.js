@@ -25,33 +25,25 @@ import Register from "./register";
 import DashboardSection from "./dashboardPage";
 import EntriesPage from "./entriesPage";
 import { handleEmptyValues, themeObj } from "../commonFunctions";
-import { useDispatch } from "react-redux";
-import { funAdmin, funAdminID } from "../reactRedux/action";
-import { Divider } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { CircularProgress, Divider, Modal } from "@mui/material";
+import { funLoading } from "../reactRedux/action";
 
 export default function FileArea() {
-  const dispatch = useDispatch();
   const theme = createTheme(themeObj);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const selector = useSelector((state) => state);
+  const dispatch = useDispatch();
+  const { loading } = selector.candidateReducer;
+  // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     try {
-      // window.addEventListener("unload", () => {
-      let admin, adminID;
-      if (window?.localStorage?.getItem("admin")) {
-        admin = window?.localStorage?.getItem("admin");
-        adminID = window?.localStorage?.getItem("adminID");
-      }
-      console.log(admin);
-      dispatch(funAdmin(admin));
-      dispatch(funAdminID(adminID));
-      // });
     } catch (err) {
       console.log(err);
     }
   });
-
   const handleDrawerOpen = () => {
     console.log("eqwegqwyewy");
     setOpen(true);
@@ -331,6 +323,33 @@ export default function FileArea() {
             <Route path="/dashboard" element={<DashboardSection />} />
             <Route path="/entries" element={<EntriesPage />} />
           </Routes>
+          <div>
+            {/* <Button onClick={handleOpen}>Open modal</Button> */}
+            <Modal
+              open={loading}
+              onClose={() => {
+                dispatch(funLoading(false));
+              }}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+              // sx={{ marginTop: "5%", marginBottom: "5%" }}
+            >
+              <Box
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <CircularProgress />
+              </Box>
+              {/* <div className="circularProgressDiv">
+                <CircularProgress id="circularIcon" />
+              </div> */}
+            </Modal>
+          </div>
         </Typography>
       </Box>
     </Box>

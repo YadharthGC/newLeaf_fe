@@ -12,8 +12,10 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 // import RemoveIcon from "@mui/icons-material/Remove";
 import axios from "axios";
 import { renderhost } from "../nodeLink";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { attendanceSample } from "../calendarSample";
+import { handleLocalStorage } from "../commonFunctions";
+import { funLoading } from "../reactRedux/action";
 
 export default function CalendarPage() {
   // const [users, setUsers] = useState();
@@ -22,9 +24,6 @@ export default function CalendarPage() {
   const [primaryDate, setPrimaryDate] = useState("");
   const [searchUser, setSearchUser] = useState("");
   const [blink, setBlink] = useState("Therapists");
-  const selector = useSelector((state) => state);
-  const { admin } = selector.candidateReducer;
-
   const days = [
     "Sunday",
     "Monday",
@@ -34,95 +33,40 @@ export default function CalendarPage() {
     "Friday",
     "Saturday",
   ];
+  const [status, setStatus] = useState(false);
+  const admin = window?.localStorage?.getItem("admin");
+  const adminID = window?.localStorage?.getItem("adminID");
+  const dispatch = useDispatch();
+  // const selector = useSelector((state) => state);
+  // const { admin, adminID } = selector.candidateReducer;
 
   useEffect(() => {
     try {
-      handleCreateObj();
+      handleGetDetails();
       handleSetDays();
     } catch (err) {
       console.log(err);
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleCreateObj = () => {
-    try {
-      let attendObj = attendanceSample;
-      setModifyUsers(attendObj);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const handleCreateObjB = async () => {
-    try {
-      // let arrSam = sampAtt;
-      let arrSam = [];
-      arrSam = await handleGetDetails();
-      console.log(arrSam);
-      let assignObj = [];
-      let commonId = [];
-
-      for (let i = 0; i < arrSam.length; i++) {
-        if (!commonId.includes(arrSam[i].employeeID)) {
-          commonId.push(arrSam[i].employeeID);
-          arrSam[i].attendance = [];
-          arrSam[i].attendance.push({
-            date: arrSam[i].date,
-            status: "present",
-          });
-          assignObj.push(arrSam[i]);
-        } else {
-          let findComon = assignObj.findIndex(
-            (obj) => obj.employeeID === arrSam[i].employeeID
-          );
-          assignObj[findComon].attendance.push({
-            date: arrSam[i].date,
-            status: "present",
-          });
-        }
-      }
-
-      // for (let i = 0; i < arrSam.length; i++) {
-      //   if (!commonId.includes(arrSam[i].employeeID)) {
-      //     commonId.push(arrSam[i].employeeID);
-      //     arrSam[i].attendance = [];
-      //     arrSam[i].attendance.push({
-      //       date: arrSam[i].date,
-      //       status: "present",
-      //     });
-      //     assignObj.push(arrSam[i]);
-      //   } else {
-      //     let findComon = assignObj.findIndex(
-      //       (obj) => obj.employeeID === arrSam[i].employeeID
-      //     );
-      //     assignObj[findComon].attendance.push({
-      //       date: arrSam[i].date,
-      //       status: "present",
-      //     });
-      //   }
-      // }
-      // setModifyUsers(assignObj);
-      return assignObj;
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  useEffect(() => {
+    setStatus(false);
+  }, [status]);
 
   const handleGetDetails = async () => {
     try {
-      let objData;
-      console.log("yes", `${renderhost}/getAttendance`);
+      dispatch(funLoading(true));
       await axios
-        .get(`${renderhost}/getAttendance`)
+        .post(`${renderhost}/getData`, { admin, adminID })
         .then((res) => {
-          objData = res.data.message;
-          console.log(objData);
+          console.log(res.data.message);
+          setModifyUsers(res.data.message);
+          dispatch(funLoading(false));
         })
         .catch((err) => console.log(err));
-      console.log(objData);
-      return objData;
     } catch (err) {
       console.log(err);
+      dispatch(funLoading(false));
     }
   };
 
@@ -212,8 +156,6 @@ export default function CalendarPage() {
 
   const handleSearchUser = () => {
     try {
-      console.log(searchUser);
-
       let changeUsers = [];
 
       for (let i = 0; i < modifyUsers.length; i++) {
@@ -223,8 +165,66 @@ export default function CalendarPage() {
           changeUsers.push(modifyUsers[i]);
         }
       }
-      console.log(changeUsers);
       setModifyUsers(changeUsers);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChangeStatus = async (props, actions) => {
+    try {
+      console.log(props, actions);
+      let selectedDate = props.form.fulldate;
+      let candidateArr = modifyUsers;
+      let attArr;
+      if (actions === "present") {
+        attArr = props.allObj.attendance;
+
+        for (let i = 0; i < attArr.length; i++) {
+          if (attArr[i].date === selectedDate) {
+            attArr[i].status = "absent";
+            break;
+          }
+        }
+      } else if (actions === "absent") {
+        let newAttArr = props.allObj.attendance;
+
+        attArr = newAttArr.filter((data) => {
+          return data.date !== selectedDate;
+        });
+      } else if (actions === "none") {
+        attArr = props.allObj.attendance ? props.allObj.attendance : [];
+
+        attArr.push({
+          date: selectedDate,
+          status: "present",
+        });
+      }
+
+      for (let i = 0; i < candidateArr.length; i++) {
+        if (candidateArr[i].candidateID === props.allObj.candidateID) {
+          candidateArr[i].attendance = attArr;
+          break;
+        }
+      }
+      setModifyUsers(candidateArr);
+      setStatus(true);
+      await handleChangeStatusApi(attArr, props.allObj);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const handleChangeStatusApi = async (attArr, dataObj) => {
+    try {
+      console.log(attArr, dataObj);
+      dataObj.attendance = attArr;
+      await axios
+        .post(`${renderhost}/attendancechange`, dataObj)
+        .then((res) => {
+          console.log(res.data.message);
+        })
+        .catch((err) => console.log(err));
     } catch (err) {
       console.log(err);
     }
@@ -234,13 +234,20 @@ export default function CalendarPage() {
     try {
       let propsData = props.data;
       let propsForm = props.form;
-      let val = propsData.findIndex((obj) => obj.date === propsForm.fulldate);
+      let val = propsData
+        ? propsData.findIndex((obj) => obj.date === propsForm.fulldate)
+        : "";
 
-      if (val !== -1) {
+      if (val !== -1 && propsData?.length) {
         if (propsData[val].status === "present") {
           return (
             <div className="userweekNo">
-              <div>
+              <div
+                className="tickAttend"
+                onClick={() => {
+                  handleChangeStatus(props, "present");
+                }}
+              >
                 &#10004;
                 {/* <DoneIcon /> */}
               </div>
@@ -249,7 +256,12 @@ export default function CalendarPage() {
         } else {
           return (
             <div className="userweekNo">
-              <div>
+              <div
+                className="closeAttend"
+                onClick={() => {
+                  handleChangeStatus(props, "absent");
+                }}
+              >
                 &#10008;
                 {/* <CloseIcon /> */}
               </div>
@@ -259,7 +271,14 @@ export default function CalendarPage() {
       } else {
         return (
           <div className="userweekNo">
-            <div>-{/* <RemoveIcon /> */}</div>
+            <div
+              className="noneAttend"
+              onClick={() => {
+                handleChangeStatus(props, "none");
+              }}
+            >
+              -{/* <RemoveIcon /> */}
+            </div>
           </div>
         );
       }
@@ -377,12 +396,6 @@ export default function CalendarPage() {
                 onChange={(e) => {
                   setSearchUser(e.target.value);
                 }}
-                onKeyUp={(e) => {
-                  console.log(e);
-                  if (e.code === "Enter") {
-                    handleSearchUser();
-                  }
-                }}
               />
             </div>
             <div className="daysDiv">
@@ -412,8 +425,16 @@ export default function CalendarPage() {
                       <div className="userdaysNoDiv">
                         <div className="usersearchDiv">
                           <Avatar
-                            alt="Cindy Baker"
-                            src="/static/images/avatar/3.jpg"
+                            alt={data.name}
+                            src={
+                              data.photoa
+                                ? data.photoa
+                                : data.photob
+                                ? data.photob
+                                : data.photoc
+                                ? data.photoc
+                                : ""
+                            }
                           />
                           <span className="naming">{data.name}</span>
                         </div>
@@ -425,6 +446,7 @@ export default function CalendarPage() {
                                 data={data.attendance}
                                 form={form}
                                 index={index}
+                                allObj={data}
                               />
                             );
                           })}

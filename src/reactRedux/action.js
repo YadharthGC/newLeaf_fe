@@ -12,16 +12,9 @@ export const funEdit = (data) => {
   };
 };
 
-export const funAdmin = (data) => {
+export const funLoading = (data) => {
   return {
-    type: "SETADMIN",
-    payload: data,
-  };
-};
-
-export const funAdminID = (data) => {
-  return {
-    type: "SETADMINID",
+    type: "SETLOADING",
     payload: data,
   };
 };

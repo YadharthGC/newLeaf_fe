@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { renderhost } from "../nodeLink";
 import { useDispatch } from "react-redux";
-import { funAdmin } from "../reactRedux/action";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -23,7 +22,6 @@ export default function LoginPage() {
         .post(`${renderhost}/login`, dataObj)
         .then((res) => {
           console.log(res.data);
-          dispatch(funAdmin(res.data.admin));
           window.localStorage.setItem("admin", res.data.name);
           window.localStorage.setItem("adminID", res.data.adminID);
           navigate("/filearea/dashboard");

@@ -248,3 +248,27 @@
 .deepTwo {
   text-align: center;
 }
+.weekName.setWeekName {
+  border-bottom: solid blue;
+  color: blue;
+}
+.eventsBox {
+  height: 28vh;
+  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+.eventsBox::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+.eventsBox::-webkit-scrollbar-track {
+  background: lightgray;
+}
+
+/* Handle */
+.eventsBox::-webkit-scrollbar-thumb {
+  background: blue;
+  width: 7px;
+}

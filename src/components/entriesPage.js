@@ -13,11 +13,12 @@ import { entrySample } from "../calendarSample";
 
 export default function EntriesPage() {
   const selector = useSelector((state) => state);
-  const { admin } = selector.candidateReducer;
   const dispatch = useDispatch();
   const [blink, setBlink] = useState("Therapists");
   const [users, setUsers] = useState([]);
   const [searchUser, setSearchUser] = useState("");
+  const admin = window.localStorage.getItem("admin");
+  const adminID = window.localStorage.getItem("adminID");
 
   useEffect(() => {
     console.log(entrySample);

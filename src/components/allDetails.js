@@ -10,7 +10,7 @@ import LightModeIcon from "@mui/icons-material/LightMode";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import { useNavigate } from "react-router-dom";
-import { funEdit, funSelectCandidate } from "../reactRedux/action";
+import { funEdit, funLoading, funSelectCandidate } from "../reactRedux/action";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import Box from "@mui/material/Box";
@@ -21,10 +21,10 @@ import "video-react/dist/video-react.css";
 import { Player } from "video-react";
 import { renderhost } from "../nodeLink";
 import { sampAll } from "../calendarSample";
+import ReactPlayer from "react-player";
 
 export default function AllDetails() {
   const selector = useSelector((state) => state);
-  const { admin } = selector.candidateReducer;
   const dispatch = useDispatch();
   // const [users, setUsers] = useState(sampAll);
   const [showUsers, setShowUsers] = useState([]);
@@ -36,15 +36,17 @@ export default function AllDetails() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [showSrc, setShowSrc] = useState("");
+  const admin = window.localStorage.getItem("admin");
+  const adminID = window.localStorage.getItem("adminID");
 
   useEffect(() => {
-    if (!searchUser) {
-      let getDataCall = async () => {
-        await handleGetData();
-      };
-      getDataCall();
-    }
-  }, [searchUser]);
+    // if (!searchUser) {
+    let getDataCall = async () => {
+      await handleGetData();
+    };
+    getDataCall();
+    // }
+  }, []);
 
   useEffect(() => {
     setStatus(false);
@@ -71,23 +73,28 @@ export default function AllDetails() {
     p: 4,
   };
 
-  const handleGetData2 = async () => {
+  const handleGetData = async () => {
     try {
+      dispatch(funLoading(true));
       await axios
-        .get(`${renderhost}/getData`)
+        .post(`${renderhost}/getData`, { admin, adminID })
         .then((res) => {
           console.log(res);
           setShowUsers(res.data.message);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          dispatch(funLoading(false));
+        });
+      dispatch(funLoading(false));
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleGetData = () => {
+  const handleGetData2 = () => {
     try {
-      setShowUsers(sampAll);
+      setShowUsers(sampAll.reverse());
     } catch (err) {
       console.log(err);
     }
@@ -95,6 +102,7 @@ export default function AllDetails() {
 
   const handleDeleteData = async (dataObj) => {
     try {
+      dispatch(funLoading(true));
       await axios
         .post(`${renderhost}/deleteId`, dataObj)
         .then((res) => {
@@ -103,12 +111,20 @@ export default function AllDetails() {
           );
           setShowUsers(users);
           setStatus(true);
+          dispatch(funLoading(false));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          dispatch(funLoading(false));
+        });
     } catch (err) {
       console.log(err);
     }
   };
+
+  // const handleDeleteData = async (dataObj) => {
+  //   console.log(dataObj.candidateID);
+  // };
 
   const handleSearchUser = () => {
     try {
@@ -171,12 +187,6 @@ export default function AllDetails() {
               onChange={(e) => {
                 setSearchUser(e.target.value);
               }}
-              onKeyUp={(e) => {
-                console.log(e);
-                if (e.code === "Enter") {
-                  handleSearchUser();
-                }
-              }}
             />
           </div>
           <div className="addUserSpan">
@@ -223,7 +233,18 @@ export default function AllDetails() {
                           <input type="checkbox" />
                         </div> */}
                           <div className="conAavatar">
-                            <Avatar alt="Cindy Baker" src={data?.photoa} />
+                            <Avatar
+                              alt={data.name}
+                              src={
+                                data.photoa
+                                  ? data.photoa
+                                  : data.photob
+                                  ? data.photob
+                                  : data.photoc
+                                  ? data.photoc
+                                  : ""
+                              }
+                            />
                           </div>
                           <div className="conAtext">{data.name}</div>
                           {blink !== "Therapists" ? (
@@ -304,7 +325,14 @@ export default function AllDetails() {
         >
           <Box sx={style}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              <Player autoPlay={true}>
+              {/* <ReactPlayer src="https://firebasestorage.googleapis.com/v0/b/ablelyfvideo.appspot.com/o/videos%2FFacebook%20242169015424324(720p).mp4?alt=media&token=a8570090-8ed5-421f-9c3b-05fd55f507d1" /> */}
+              <Player
+                autoPlay={true}
+                onEnded={() => {
+                  handleClose();
+                }}
+              >
+                {/* <source src="https://firebasestorage.googleapis.com/v0/b/ablelyfvideo.appspot.com/o/videos%2FFacebook%20242169015424324(720p).mp4?alt=media&token=a8570090-8ed5-421f-9c3b-05fd55f507d1" /> */}
                 <source src={showSrc} />
               </Player>
             </Typography>

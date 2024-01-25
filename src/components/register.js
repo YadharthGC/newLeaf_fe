@@ -25,8 +25,10 @@ import dayjs from "dayjs";
 import blankProfile from "../images/blankProfile.jpg";
 import axios from "axios";
 import { renderhost } from "../nodeLink";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CloseSharpIcon from "@mui/icons-material/CloseSharp";
+import { handleEmptyValues, themeObj } from "../commonFunctions";
+import { funLoading } from "../reactRedux/action";
 // import * as faceapi from "face-api.js";
 // import {} from "../../public/models"
 
@@ -40,7 +42,6 @@ export default function Register() {
   const [photoA, setPhotoA] = useState("");
   const [photoB, setPhotoB] = useState("");
   const [photoC, setPhotoC] = useState("");
-
   const [status, setStatus] = useState(false);
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
@@ -48,8 +49,11 @@ export default function Register() {
   const [employeeID, setEmployeeID] = useState("");
   const [shift, setShift] = useState("");
   const selector = useSelector((state) => state);
-  const { candidate, edit, admin, adminID } = selector.candidateReducer;
+  const { candidate, edit } = selector.candidateReducer;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const admin = window.localStorage.getItem("admin");
+  const adminID = window.localStorage.getItem("adminID");
 
   useEffect(() => {
     if (edit) {
@@ -157,6 +161,7 @@ export default function Register() {
       );
     } catch (err) {
       console.log(err);
+      dispatch(funLoading(false));
     }
   };
 
@@ -175,11 +180,14 @@ export default function Register() {
         adminID: adminID,
         gender: gender,
         role: blink,
-        created: new Date(),
         photoa: photoA,
         photob: photoB,
         photoc: photoC,
       };
+
+      if (!edit) {
+        dataObj.created = new Date();
+      }
 
       if (blink === "Therapists") {
         if (!employeeID) {
@@ -187,6 +195,7 @@ export default function Register() {
           return;
         }
         dataObj.employeeID = employeeID;
+        dispatch(funLoading(true));
         await handleSubmitApi(dataObj, edit ? "Edit" : "");
       } else {
         if (!shift) {
@@ -198,7 +207,7 @@ export default function Register() {
         if (!edit) {
           dataObj.employeeID = Math.random(10);
         }
-
+        dispatch(funLoading(true));
         if (edit && candidate.video === videoUpload) {
           console.log("samevideo");
           dataObj.video = videoUpload;
@@ -210,10 +219,11 @@ export default function Register() {
       }
     } catch (err) {
       console.log(err);
+      dispatch(funLoading(false));
     }
   };
 
-  let handleSubmitApi = async (dataObj) => {
+  const handleSubmitApi = async (dataObj) => {
     try {
       await axios
         .post(`${renderhost}/add`, {
@@ -222,11 +232,14 @@ export default function Register() {
         })
         .then((res) => {
           console.log(res);
+          handleEmptyValues(dispatch);
           navigate("../people");
         })
         .catch((err) => console.log(err));
+      dispatch(funLoading(false));
     } catch (err) {
       console.log(err);
+      dispatch(funLoading(false));
     }
   };
 
@@ -250,46 +263,6 @@ export default function Register() {
       console.log(err);
     }
   };
-  ///////////////////////////////
-  //////////////////////////////
-  // useEffect(() => {
-  //   const loadModels = async () => {
-  //     await faceapi.nets.tinyFaceDetector.loadFromUri("../models");
-  //     // await faceapi.nets.faceLandmark68Net.loadFromUri("/models");
-  //     // await faceapi.nets.faceRecognitionNet.loadFromUri("/models");
-  //   };
-
-  //   const captureWithFaceDetection = async () => {
-  //     const video = webcamRef.current.video;
-
-  //     // Perform face detection
-  //     const detections = await faceapi
-  //       .detectAllFaces(video, new faceapi.TinyFaceDetectorOptions())
-  //       .withFaceLandmarks()
-  //       .withFaceDescriptors();
-
-  //     // Check if a face is detected
-  //     if (detections.length > 0) {
-  //       // Perform actions like taking a photo when a face is detected
-  //       const canvas = faceapi.createCanvasFromMedia(video);
-  //       faceapi.draw.drawDetections(canvas, detections);
-  //       document.body.append(canvas);
-
-  //       // Capture the photo (you can use a library like html2canvas)
-  //       // const photoDataUrl = canvas.toDataURL('image/jpeg');
-  //       // Perform actions with the captured photo data
-  //     }
-  //   };
-
-  //   // Load face-api.js models and start capturing with face detection
-  //   loadModels().then(() => setInterval(captureWithFaceDetection, 1000));
-
-  //   return () => {
-  //     // Cleanup (e.g., stop capturing)
-  //   };
-  // }, []);
-  //////////////////////////////////////////
-  /////////////////////////////////////////////
 
   return (
     <div style={{ height: "100%" }}>

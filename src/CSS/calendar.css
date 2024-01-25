@@ -156,3 +156,8 @@
 .userdaysNoDiv:hover {
   background-color: white;
 }
+.tickAttend,
+.closeAttend,
+.noneAttend {
+  cursor: pointer;
+}
