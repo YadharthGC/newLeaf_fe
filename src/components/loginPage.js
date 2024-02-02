@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { renderhost } from "../nodeLink";
 import { useDispatch } from "react-redux";
+import { funLoading } from "../reactRedux/action";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -18,21 +19,21 @@ export default function LoginPage() {
         mail: mail,
         password: password,
       };
-      await axios
-        .post(`${renderhost}/login`, dataObj)
-        .then((res) => {
-          console.log(res.data);
-          if (res.data.message !== "No login") {
-            window.localStorage.setItem("admin", res.data.name);
-            window.localStorage.setItem("adminID", res.data.adminID);
-            navigate("/filearea/dashboard");
-          } else {
-            alert("no login found");
-          }
-        })
-        .catch((err) => console.log(err));
+      dispatch(funLoading(true));
+      await axios.post(`${renderhost}/login`, dataObj).then((res) => {
+        console.log(res.data);
+        if (res.data.message !== "No login") {
+          window.localStorage.setItem("admin", res.data.name);
+          window.localStorage.setItem("adminID", res.data.adminID);
+          dispatch(funLoading(false));
+          navigate("/filearea/dashboard");
+        } else {
+          alert("no login found");
+        }
+      });
       // navigate("/fileArea/dashboard");
     } catch (err) {
+      dispatch(funLoading(false));
       console.log(err);
     }
   };

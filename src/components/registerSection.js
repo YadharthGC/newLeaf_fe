@@ -4,11 +4,14 @@ import "../CSS/login.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { renderhost } from "../nodeLink";
+import { useDispatch } from "react-redux";
+import { funLoading } from "../reactRedux/action";
 
 export default function RegisterAdmin() {
   const navigate = useNavigate();
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
 
   const handleSubmit = async () => {
     try {
@@ -17,14 +20,14 @@ export default function RegisterAdmin() {
         mail: mail,
         password: password,
       };
-      await axios
-        .post(`${renderhost}/registeradmin`, dataObj)
-        .then((res) => {
-          console.log(res.data.message);
-          navigate("/");
-        })
-        .catch((err) => console.log(err));
+      dispatch(funLoading(true));
+      await axios.post(`${renderhost}/registeradmin`, dataObj).then((res) => {
+        console.log(res.data.message);
+        dispatch(funLoading(false));
+        navigate("/");
+      });
     } catch (err) {
+      dispatch(funLoading(false));
       console.log(err);
     }
   };
