@@ -175,7 +175,7 @@ export default function DashboardSection() {
   const handleEntries = async () => {
     try {
       await axios
-        .get(`${renderhost}/entries`)
+        .post(`${renderhost}/entries`, { admin, adminID })
         .then((res) => {
           let dataObj = res?.data?.message;
           setEntries(dataObj.reverse());
@@ -280,7 +280,12 @@ export default function DashboardSection() {
                 <div className="boxesTwoA">
                   <div className="pieceA">
                     <div className="showPercent">
-                      <div className="percentSpan">{therapistsPercentage}%</div>
+                      <div className="percentSpan">
+                        {isNaN(therapistsPercentage)
+                          ? "0"
+                          : therapistsPercentage}
+                        %
+                      </div>
                     </div>
                   </div>
                   <div className="pieceB">
@@ -294,7 +299,9 @@ export default function DashboardSection() {
                 <div className="boxesTwoB">
                   <div className="pieceA">
                     <div className="showPercent">
-                      <div className="percentSpan">{studentsPercentage}%</div>
+                      <div className="percentSpan">
+                        {isNaN(studentsPercentage) ? "0" : studentsPercentage}%
+                      </div>
                     </div>
                   </div>
                   <div className="pieceB">
@@ -320,25 +327,26 @@ export default function DashboardSection() {
       </div>
       <div className="gridB">
         <Grid container columnSpacing={2}>
-          <Grid item md={6}>
-            <div className="gridBitemB">
-              <div className="eventsTitle">Recent Entry</div>
-              <div className="eventsBox">
-                {entries?.length
-                  ? entries.map((data, index) => {
-                      return (
-                        <div className="blackBox">
-                          <div className="boxA">{index + 1}</div>
-                          <div className="boxB">
-                            <div className="subA">{data.name}</div>
-                            <div className="subB">Therapist</div>
+          {entries.length ? (
+            <Grid item md={6}>
+              <div className="gridBitemB">
+                <div className="eventsTitle">Recent Entry</div>
+                <div className="eventsBox">
+                  {entries?.length
+                    ? entries.map((data, index) => {
+                        return (
+                          <div className="blackBox">
+                            <div className="boxA">{index + 1}</div>
+                            <div className="boxB">
+                              <div className="subA">{data.name}</div>
+                              <div className="subB">Therapist</div>
+                            </div>
+                            <div className="boxC">{data.time}</div>
                           </div>
-                          <div className="boxC">{data.time}</div>
-                        </div>
-                      );
-                    })
-                  : ""}
-                {/* <div className="blackBox">
+                        );
+                      })
+                    : ""}
+                  {/* <div className="blackBox">
                   <div className="boxA">1</div>
                   <div className="boxB">
                     <div className="subA">John Michael</div>
@@ -362,9 +370,12 @@ export default function DashboardSection() {
                   </div>
                   <div className="boxC">11.25 - 11.35</div>
                 </div> */}
+                </div>
               </div>
-            </div>
-          </Grid>
+            </Grid>
+          ) : (
+            ""
+          )}
           {/* <Grid item md={6}>
             <div className="gridBitemA">
               <div className="eventsTitle">Upcoming Events</div>
