@@ -52,7 +52,7 @@ export default function EntriesPage() {
           setUsers(dataObj.reverse());
           setTimeout(async () => {
             await handleEntryData();
-          }, 10000);
+          }, 5000);
         })
         .catch((err) => {
           console.log(err);
@@ -114,17 +114,48 @@ export default function EntriesPage() {
         </div>
         <div className="allTableDiv">
           <div className="allTableHead">
-            <div className="headA entry">{blink}</div>
+            <div className="headA entry">Image</div>
             <div className="headB entry">Name</div>
-            <div className="headD entry">
-              {/* {blink === "Students" ? "Shift" : "EmployeeID"} */}
-              Role
-            </div>
+            {/* <div className="headD entry">Role</div> */}
             <div className="headC entry">Timing</div>
-            <div className="headE entry">Actions</div>
+            {/* <div className="headE entry">Actions</div> */}
           </div>
           <div className="allTableBody">
+            {console.log(searchUser)}
             {users?.length
+              ? users.map((data) => {
+                  if (
+                    data.role === blink &&
+                    (!searchUser ||
+                      data.name
+                        .toLowerCase()
+                        .includes(searchUser.toLowerCase()))
+                  ) {
+                    return (
+                      <div className="bodyPart">
+                        <div className="conA entry">
+                          <img
+                            alt={data.name}
+                            src={data.image}
+                            className="entryUserImg"
+                          />
+                        </div>
+                        <div className="conB entry">{data.name}</div>
+                        {/* <div className="conC entry">{blink}</div> */}
+                        <div className="conD entry">
+                          <div>{data.time}</div>
+                          <div>{data.date}</div>
+                        </div>
+
+                        <div className="conE entry">
+                          <NestCamWiredStandIcon id="ipIcon" />
+                        </div>
+                      </div>
+                    );
+                  }
+                })
+              : ""}
+            {/* {users?.length
               ? users.map((data) => {
                   if (
                     data.role === blink &&
@@ -151,23 +182,13 @@ export default function EntriesPage() {
                         </div>
 
                         <div className="conE entry">
-                          {/* <NestCamWiredStandIcon id="ipIcon" />
-                        <VideocamIcon id="webIcon" /> */}
-                          {/* <ModeEditIcon
-                            id="editIcon"
-                            onClick={() => {
-                              dispatch(funEdit(true));
-                              // dispatch(funSelectCandidate(data));
-                              // navigate("/register");
-                            }}
-                          /> */}
                           <NestCamWiredStandIcon id="ipIcon" />
                         </div>
                       </div>
                     );
                   }
                 })
-              : ""}
+              : ""} */}
           </div>
         </div>
       </div>

@@ -63,39 +63,39 @@
   background-color: #f6f8fb;
 }
 .headA.entry {
-  flex: 0.2;
+  flex: 0.25;
   /* text-align: center; */
 }
 .headB.entry {
-  flex: 0.2;
+  flex: 0.25;
 }
-.headD.entry {
+/* .headD.entry {
   flex: 0.2;
-}
+} */
 .headC.entry {
-  flex: 0.2;
+  flex: 0.25;
 }
 .headE.entry {
   flex: 0.2;
 }
 .conA.entry {
-  flex: 0.2;
+  flex: 0.25;
   /* display: flex;
   justify-content: center;
   align-items: center; */
 }
 .conB.entry {
-  flex: 0.2;
+  flex: 0.25;
 }
-.conC.entry {
+/* .conC.entry {
   flex: 0.2;
   text-align: center;
-}
+} */
 .conD.entry {
-  flex: 0.2;
+  flex: 0.25;
   text-align: center;
 }
 .conE.entry {
-  flex: 0.2;
+  flex: 0.25;
   text-align: center;
 }
