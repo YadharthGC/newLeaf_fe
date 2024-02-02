@@ -36,10 +36,18 @@ export default function FileArea() {
   const selector = useSelector((state) => state);
   const dispatch = useDispatch();
   const { loading } = selector.candidateReducer;
+  const [showPage, setShowPage] = useState(true);
+  const admin = window.localStorage.getItem("admin");
+  const adminID = window.localStorage.getItem("adminID");
   // const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     try {
+      if (admin && adminID) {
+        setShowPage(true);
+      } else {
+        setShowPage(false);
+      }
     } catch (err) {
       console.log(err);
     }
@@ -105,253 +113,282 @@ export default function FileArea() {
   }));
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <StyledDrawer id="leftContentComponent" variant="permanent" open={open}>
-        <DrawerHeader sx={{ textAlign: "center" }}>
-          {open ? (
-            <>
-              <span class="material-symbols-outlined" id="spaIcon">
-                spa
-              </span>
-              <span className="ableLyf">AbleLyf</span>
-            </>
-          ) : (
-            ""
-          )}
-          <IconButton
-            onClick={() => {
-              if (open) {
-                handleDrawerClose();
-              } else {
-                handleDrawerOpen();
-              }
-            }}
+    <>
+      {showPage ? (
+        <Box sx={{ display: "flex" }}>
+          <StyledDrawer
+            id="leftContentComponent"
+            variant="permanent"
+            open={open}
           >
-            {open ? (
-              <ChevronRightIcon />
-            ) : (
-              <MenuIcon
-                sx={{
-                  color: "black",
-                }}
-              />
-            )}
-          </IconButton>
-        </DrawerHeader>
-        <List sx={{ height: "80%" }}>
-          <ListItem
-            onClick={() => {
-              // setComponent("dashboard");
-            }}
-            key={"dashboard"}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2,
-              }}
-              onClick={() => {
-                handleEmptyValues(dispatch);
-                navigate("dashboard");
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                  color: "black",
+            <DrawerHeader sx={{ textAlign: "center" }}>
+              {open ? (
+                <>
+                  <span class="material-symbols-outlined" id="spaIcon">
+                    spa
+                  </span>
+                  <span className="ableLyf">AbleLyf</span>
+                </>
+              ) : (
+                ""
+              )}
+              <IconButton
+                onClick={() => {
+                  if (open) {
+                    handleDrawerClose();
+                  } else {
+                    handleDrawerOpen();
+                  }
                 }}
               >
-                <DashboardOutlinedIcon id="dashBoardIcon" />
-              </ListItemIcon>
-              <ListItemText
-                id="dashBoardText"
-                primary={"DashBoard"}
-                sx={{ opacity: open ? 1 : 0, color: "black", fontSize: "30px" }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem key={"calendar"} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2,
-              }}
-              onClick={() => {
-                handleEmptyValues(dispatch);
-                navigate("calendar");
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                  color: "black",
+                {open ? (
+                  <ChevronRightIcon />
+                ) : (
+                  <MenuIcon
+                    sx={{
+                      color: "black",
+                    }}
+                  />
+                )}
+              </IconButton>
+            </DrawerHeader>
+            <List sx={{ height: "80%" }}>
+              <ListItem
+                onClick={() => {
+                  // setComponent("dashboard");
                 }}
+                key={"dashboard"}
+                disablePadding
+                sx={{ display: "block" }}
               >
-                <CalendarMonthOutlinedIcon id="calendarIcon" />
-              </ListItemIcon>
-              <ListItemText
-                id="calendarText"
-                primary={"Attendance"}
-                sx={{ opacity: open ? 1 : 0, color: "black" }}
-              />
-            </ListItemButton>
-          </ListItem>
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2,
+                  }}
+                  onClick={() => {
+                    handleEmptyValues(dispatch);
+                    navigate("dashboard");
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "black",
+                    }}
+                  >
+                    <DashboardOutlinedIcon id="dashBoardIcon" />
+                  </ListItemIcon>
+                  <ListItemText
+                    id="dashBoardText"
+                    primary={"DashBoard"}
+                    sx={{
+                      opacity: open ? 1 : 0,
+                      color: "black",
+                      fontSize: "30px",
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                key={"calendar"}
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2,
+                  }}
+                  onClick={() => {
+                    handleEmptyValues(dispatch);
+                    navigate("calendar");
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "black",
+                    }}
+                  >
+                    <CalendarMonthOutlinedIcon id="calendarIcon" />
+                  </ListItemIcon>
+                  <ListItemText
+                    id="calendarText"
+                    primary={"Attendance"}
+                    sx={{ opacity: open ? 1 : 0, color: "black" }}
+                  />
+                </ListItemButton>
+              </ListItem>
 
-          <ListItem
-            onClick={() => {
-              handleEmptyValues(dispatch);
-              navigate("people");
+              <ListItem
+                onClick={() => {
+                  handleEmptyValues(dispatch);
+                  navigate("people");
+                }}
+                key={"students"}
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "black",
+                    }}
+                  >
+                    <PeopleAltOutlinedIcon id="peopleIcon" />
+                  </ListItemIcon>
+                  <ListItemText
+                    id="peopleText"
+                    primary={"Students"}
+                    sx={{ opacity: open ? 1 : 0, color: "black" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                onClick={() => {
+                  handleEmptyValues(dispatch);
+                  navigate("entries");
+                }}
+                key={"students"}
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "black",
+                    }}
+                  >
+                    <ScheduleSendTwoToneIcon id="schedule" />
+                  </ListItemIcon>
+                  <ListItemText
+                    id="peopleText"
+                    primary={"Students"}
+                    sx={{ opacity: open ? 1 : 0, color: "black" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
+            <Divider />
+            <List>
+              <ListItem
+                key={"dashboard"}
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2,
+                  }}
+                  onClick={() => {
+                    window.localStorage.removeItem("admin");
+                    window.localStorage.removeItem("adminID");
+                    navigate("/");
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "black",
+                    }}
+                  >
+                    <LogoutSharpIcon id="logoutIcon" />
+                    {/* <DashboardOutlinedIcon id="dashBoardIcon" /> */}
+                  </ListItemIcon>
+                  <ListItemText
+                    id="dashBoardText"
+                    primary={"DashBoard"}
+                    sx={{
+                      opacity: open ? 1 : 0,
+                      color: "black",
+                      fontSize: "30px",
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </StyledDrawer>
+          <Box
+            id="rightContent"
+            component="main"
+            sx={{
+              flexGrow: 2,
+              height: "100vh",
             }}
-            key={"students"}
-            disablePadding
-            sx={{ display: "block" }}
           >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2,
-              }}
+            <Typography
+              paragraph
+              sx={{ fontFamily: "Nunito Sans, sans-serif" }}
             >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                  color: "black",
-                }}
-              >
-                <PeopleAltOutlinedIcon id="peopleIcon" />
-              </ListItemIcon>
-              <ListItemText
-                id="peopleText"
-                primary={"Students"}
-                sx={{ opacity: open ? 1 : 0, color: "black" }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            onClick={() => {
-              handleEmptyValues(dispatch);
-              navigate("entries");
-            }}
-            key={"students"}
-            disablePadding
-            sx={{ display: "block" }}
-          >
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                  color: "black",
-                }}
-              >
-                <ScheduleSendTwoToneIcon id="schedule" />
-              </ListItemIcon>
-              <ListItemText
-                id="peopleText"
-                primary={"Students"}
-                sx={{ opacity: open ? 1 : 0, color: "black" }}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
-        <Divider />
-        <List>
-          <ListItem key={"dashboard"} disablePadding sx={{ display: "block" }}>
-            <ListItemButton
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2,
-              }}
-              onClick={() => {
-                window.localStorage.removeItem("admin");
-                window.localStorage.removeItem("adminID");
-                navigate("/");
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                  color: "black",
-                }}
-              >
-                <LogoutSharpIcon id="logoutIcon" />
-                {/* <DashboardOutlinedIcon id="dashBoardIcon" /> */}
-              </ListItemIcon>
-              <ListItemText
-                id="dashBoardText"
-                primary={"DashBoard"}
-                sx={{ opacity: open ? 1 : 0, color: "black", fontSize: "30px" }}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
-      </StyledDrawer>
-      <Box
-        id="rightContent"
-        component="main"
-        sx={{
-          flexGrow: 2,
-          height: "100vh",
-        }}
-      >
-        <Typography paragraph sx={{ fontFamily: "Nunito Sans, sans-serif" }}>
-          <Routes>
-            <Route path="/calendar" element={<CalendarPage />} />
-            <Route path="/people" element={<AllDetails />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/dashboard" element={<DashboardSection />} />
-            <Route path="/entries" element={<EntriesPage />} />
-          </Routes>
-          <div>
-            {/* <Button onClick={handleOpen}>Open modal</Button> */}
-            <Modal
-              open={loading}
-              onClose={() => {
-                dispatch(funLoading(false));
-              }}
-              aria-labelledby="modal-modal-title"
-              aria-describedby="modal-modal-description"
-              // sx={{ marginTop: "5%", marginBottom: "5%" }}
-            >
-              <Box
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <CircularProgress />
-              </Box>
-              {/* <div className="circularProgressDiv">
+              <Routes>
+                <Route path="/calendar" element={<CalendarPage />} />
+                <Route path="/people" element={<AllDetails />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/dashboard" element={<DashboardSection />} />
+                <Route path="/entries" element={<EntriesPage />} />
+              </Routes>
+              <div>
+                {/* <Button onClick={handleOpen}>Open modal</Button> */}
+                <Modal
+                  open={loading}
+                  onClose={() => {
+                    dispatch(funLoading(false));
+                  }}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                  // sx={{ marginTop: "5%", marginBottom: "5%" }}
+                >
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <CircularProgress />
+                  </Box>
+                  {/* <div className="circularProgressDiv">
                 <CircularProgress id="circularIcon" />
               </div> */}
-            </Modal>
-          </div>
-        </Typography>
-      </Box>
-    </Box>
+                </Modal>
+              </div>
+            </Typography>
+          </Box>
+        </Box>
+      ) : (
+        <div>Login ERROR</div>
+      )}
+    </>
   );
 }

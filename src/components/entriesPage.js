@@ -24,11 +24,13 @@ export default function EntriesPage() {
   const adminID = window.localStorage.getItem("adminID");
   const [candidatesIDArr, setCandidatesIDarr] = useState([]);
   const [status, setStatus] = useState(false);
+  const [initialZero, setInitialZero] = useState(0);
 
   useEffect(() => {
     // console.log(entrySample);
     // setUsers(entrySample);
-    handleGetData();
+    // handleGetData();
+    // setInterval(handleEntryData, 5000);
     handleEntryData();
   }, []);
 
@@ -36,40 +38,21 @@ export default function EntriesPage() {
     setStatus(false);
   }, [status]);
 
-  const handleGetData = async () => {
-    try {
-      dispatch(funLoading(true));
-      await axios
-        .post(`${renderhost}/getData`, { admin, adminID })
-        .then((res) => {
-          console.log(res);
-          let arrCandidateId = res.data.message.map((data) => {
-            return data.candidateID;
-          });
-          console.log(arrCandidateId);
-          setCandidatesIDarr(arrCandidateId);
-          // setShowUsers(res.data.message);
-        })
-        .catch((err) => {
-          console.log(err);
-          dispatch(funLoading(false));
-        });
-      dispatch(funLoading(false));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
   const handleEntryData = async () => {
     try {
-      dispatch(funLoading(true));
+      // console.log(initialZero, "initialZero");
+      // initialZero === 0 && dispatch(funLoading(true));
+      // let count = initialZero;
+      // setInitialZero((data) => data + 1);
       await axios
-        .get(`${renderhost}/entries`)
-        .then((res) => {
+        .post(`${renderhost}/entries`, { admin, adminID })
+        .then(async (res) => {
           let dataObj = res?.data?.message;
           console.log(dataObj);
-
           setUsers(dataObj.reverse());
+          setTimeout(async () => {
+            await handleEntryData();
+          }, 10000);
         })
         .catch((err) => {
           console.log(err);
@@ -81,20 +64,6 @@ export default function EntriesPage() {
     } catch (err) {
       console.log(err);
       dispatch(funLoading(false));
-    }
-  };
-
-  const handleDeleteData = async (data) => {
-    try {
-      await axios.post(`${renderhost}/deleteentries`, data).then((res) => {
-        let newUsersArr = users.filter((datae) => {
-          return datae["_id"] !== data["_id"];
-        });
-        setUsers(newUsersArr);
-        setStatus(true);
-      });
-    } catch (err) {
-      console.log(err);
     }
   };
 
@@ -192,12 +161,7 @@ export default function EntriesPage() {
                               // navigate("/register");
                             }}
                           /> */}
-                          <DeleteIcon
-                            id="delIcon"
-                            onClick={() => {
-                              handleDeleteData(data);
-                            }}
-                          />
+                          <NestCamWiredStandIcon id="ipIcon" />
                         </div>
                       </div>
                     );
