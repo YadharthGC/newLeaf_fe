@@ -186,7 +186,6 @@ export default function DashboardSection() {
     }
   };
 
-  const selector = useSelector((state) => state);
   return (
     <div>
       <div className="heading">

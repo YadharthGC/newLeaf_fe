@@ -226,13 +226,12 @@ export default function FileArea() {
                   />
                 </ListItemButton>
               </ListItem>
-
               <ListItem
                 onClick={() => {
                   handleEmptyValues(dispatch);
                   navigate("people");
                 }}
-                key={"students"}
+                key={"candidates"}
                 disablePadding
                 sx={{ display: "block" }}
               >
@@ -265,7 +264,7 @@ export default function FileArea() {
                   handleEmptyValues(dispatch);
                   navigate("entries");
                 }}
-                key={"students"}
+                key={"entries"}
                 disablePadding
                 sx={{ display: "block" }}
               >
@@ -296,11 +295,7 @@ export default function FileArea() {
             </List>
             <Divider />
             <List>
-              <ListItem
-                key={"dashboard"}
-                disablePadding
-                sx={{ display: "block" }}
-              >
+              <ListItem key={"logout"} disablePadding sx={{ display: "block" }}>
                 <ListItemButton
                   sx={{
                     minHeight: 48,

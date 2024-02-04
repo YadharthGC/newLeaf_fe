@@ -24,7 +24,6 @@ import { sampAll } from "../calendarSample";
 import ReactPlayer from "react-player";
 
 export default function AllDetails() {
-  const selector = useSelector((state) => state);
   const dispatch = useDispatch();
   // const [users, setUsers] = useState(sampAll);
   const [showUsers, setShowUsers] = useState([]);
@@ -81,6 +80,7 @@ export default function AllDetails() {
         .then((res) => {
           console.log(res);
           setShowUsers(res.data.message);
+          // setShowUsers([]);
         })
         .catch((err) => {
           console.log(err);
@@ -117,7 +117,7 @@ export default function AllDetails() {
   return (
     <div>
       <div className="heading">
-        <div className="headTitle">PeopleInfo</div>
+        <div className="headTitle">CandidatesDetails</div>
         <div className="adminSec">
           <span className="adminText">Welcome {admin}</span>
           <span className="AvatarIcon">
@@ -279,6 +279,38 @@ export default function AllDetails() {
                   }
                 })
               : ""}
+
+            {!showUsers?.length ? (
+              <div style={{ textAlign: "center" }}>
+                No Candidates Registered under you
+              </div>
+            ) : (
+              ""
+            )}
+
+            {blink === "Therapists" &&
+            showUsers?.length &&
+            showUsers.filter((data) => {
+              return data.role === "Therapists";
+            }).length === 0 ? (
+              <div style={{ textAlign: "center" }}>
+                No Therapists Registered under you
+              </div>
+            ) : (
+              ""
+            )}
+
+            {blink === "Students" &&
+            showUsers?.length &&
+            showUsers.filter((data) => {
+              return data.role === "Students";
+            }).length === 0 ? (
+              <div style={{ textAlign: "center" }}>
+                No Students Registered under you
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>

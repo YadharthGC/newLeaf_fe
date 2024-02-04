@@ -577,6 +577,7 @@ export default function Register() {
                       <VisuallyHiddenInput
                         type="file"
                         onChange={(e) => {
+                          console.log(e.target);
                           setVideoUpload(e.target?.files[0]);
                         }}
                       />

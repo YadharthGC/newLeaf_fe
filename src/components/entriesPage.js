@@ -14,11 +14,10 @@ import axios from "axios";
 import { renderhost } from "../nodeLink";
 
 export default function EntriesPage() {
-  const selector = useSelector((state) => state);
   const dispatch = useDispatch();
   const [blink, setBlink] = useState("Therapists");
   const [users, setUsers] = useState([]);
-  const [showUsers, setShowUsers] = useState([]);
+  // const [showUsers, setShowUsers] = useState([]);
   const [searchUser, setSearchUser] = useState("");
   const admin = window.localStorage.getItem("admin");
   const adminID = window.localStorage.getItem("adminID");
@@ -155,6 +154,33 @@ export default function EntriesPage() {
                   }
                 })
               : ""}
+
+            {!users?.length ? (
+              <div style={{ textAlign: "center" }}>No Entries</div>
+            ) : (
+              ""
+            )}
+
+            {blink === "Therapists" &&
+            users?.length &&
+            users.filter((data) => {
+              return data.role === "Therapists";
+            }).length === 0 ? (
+              <div style={{ textAlign: "center" }}>No Therapists Entries</div>
+            ) : (
+              ""
+            )}
+
+            {blink === "Students" &&
+            users?.length &&
+            users.filter((data) => {
+              return data.role === "Students";
+            }).length === 0 ? (
+              <div style={{ textAlign: "center" }}>No Students Entries</div>
+            ) : (
+              ""
+            )}
+
             {/* {users?.length
               ? users.map((data) => {
                   if (

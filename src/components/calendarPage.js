@@ -456,6 +456,38 @@ export default function CalendarPage() {
                   }
                 })
               : ""}
+
+            {!modifyUsers?.length ? (
+              <div style={{ textAlign: "center" }}>
+                No Candidates Registered under you
+              </div>
+            ) : (
+              ""
+            )}
+
+            {blink === "Therapists" &&
+            modifyUsers?.length &&
+            modifyUsers.filter((data) => {
+              return data.role === "Therapists";
+            }).length === 0 ? (
+              <div style={{ textAlign: "center" }}>
+                No Therapists Registered under you
+              </div>
+            ) : (
+              ""
+            )}
+
+            {blink === "Students" &&
+            modifyUsers?.length &&
+            modifyUsers.filter((data) => {
+              return data.role === "Students";
+            }).length === 0 ? (
+              <div style={{ textAlign: "center" }}>
+                No Students Registered under you
+              </div>
+            ) : (
+              ""
+            )}
           </div>
         </div>
       </div>
