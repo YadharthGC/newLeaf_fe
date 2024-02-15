@@ -265,7 +265,7 @@ export default function Register() {
   };
 
   return (
-    <div style={{ height: "100%" }}>
+    <div>
       <div className="heading">
         <div className="headTitle">{edit ? "Edit" : "Register"} </div>
         <div className="adminSec">

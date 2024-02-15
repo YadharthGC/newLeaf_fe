@@ -1,0 +1,32 @@
+#DashBoardPage {
+  .tools {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 10px;
+    padding-bottom: 7px;
+    border-bottom: solid 1px gray;
+  }
+  #videoCallIcon:hover {
+    cursor: pointer;
+    color: blue;
+  }
+  .tools {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+  .AddVideo,
+  .AddAd {
+    display: flex;
+    align-items: center;
+    margin-right: 1%;
+  }
+  .AddVideo {
+    // border-right: solid 1px black;
+  }
+  .dashBoardPage {
+    min-height: 100vh;
+    height: 100%;
+    background-color: #f6f8fb;
+  }
+}

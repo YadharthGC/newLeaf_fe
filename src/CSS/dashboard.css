@@ -6,17 +6,17 @@
 }
 .gridItemA {
   /* border: solid 1px black; */
-  height: 370px;
+  /* height: 370px; */
   padding: 20px;
   padding-top: 0px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: flex-start;
 }
 .gridItemB {
   /* border: solid 1px black; */
-  height: 370px;
+  /* height: 370px; */
   padding: 20px;
   padding-top: 0px;
   display: flex;
@@ -53,8 +53,9 @@
   background-color: lightgray;
   border-radius: 30px;
   width: 180px;
+  height: 145px;
   padding: 18px;
-  height: 80%;
+  /* height: 80%; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -76,10 +77,12 @@
   font-weight: bolder;
 }
 .boxesTwo {
+  width: 100%;
   flex: 0.5;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  flex-wrap: wrap;
+  /* justify-content: flex-start;
+  align-items: center; */
 }
 .boxesTwoA,
 .boxesTwoB,
@@ -163,7 +166,7 @@
   align-items: center;
 }
 .showDate {
-  flex: 0.5;
+  /* flex: 0.5; */
   width: 100%;
   font-weight: bolder;
   /* display: flex;

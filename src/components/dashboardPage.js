@@ -7,6 +7,11 @@ import { sampAll } from "../calendarSample";
 import axios from "axios";
 import { renderhost } from "../nodeLink";
 import { funLoading } from "../reactRedux/action";
+import VideoCallIcon from "@mui/icons-material/VideoCall";
+import "../SCSS/dashboardPage.scss";
+import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import CameraIcon from "@mui/icons-material/Camera";
+import { useNavigate } from "react-router-dom";
 
 export default function DashboardSection() {
   const [users, setUsers] = useState([]);
@@ -31,6 +36,7 @@ export default function DashboardSection() {
   const admin = window.localStorage.getItem("admin");
   const adminID = window.localStorage.getItem("adminID");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleTotalData();
@@ -187,7 +193,7 @@ export default function DashboardSection() {
   };
 
   return (
-    <div>
+    <div id="DashBoardPage">
       <div className="heading">
         <div className="headTitle">DashBoard</div>
         <div className="adminSec">
@@ -197,55 +203,76 @@ export default function DashboardSection() {
           </span>
         </div>
       </div>
-      <div className="gridA">
-        <Grid container columnSpacing={2}>
-          <Grid item md={6}>
-            <div className="gridItemA">
-              <div className="shiftAdmin">Good Morning,{admin}</div>
-              <div className="prettyText">
-                <span className="prettySpan">
-                  Welcome to AbleLyf!Manage attendance with ease
-                </span>
-              </div>
-              <div className="accountDiv">
-                {/* <span className="accountSpan">Account</span> */}
-              </div>
-              <div className="twoBoxes">
-                <div className="firstBox">
-                  <div className="firstCon">Therapists</div>
-                  <div className="secondCon">Under you</div>
-                  <div className="thirdCon">{therapistsStrength}</div>
+      <div className="dashBoardPage">
+        <div className="tools">
+          <div className="AddVideo">
+            {/* <span className="addCamText">Add Camera</span>&nbsp;&nbsp; */}
+            <AddAPhotoIcon
+              id="videoCallIcon"
+              onClick={() => {
+                navigate("../addcamera");
+              }}
+            />
+          </div>
+          <div className="AddAd">
+            {/* <span className="addadText">Add Advertisement</span>&nbsp;&nbsp; */}
+            <CameraIcon
+              id="videoCallIcon"
+              onClick={() => {
+                navigate("../addad");
+              }}
+            />
+          </div>
+        </div>
+        <div className="gridA">
+          <Grid container columnSpacing={2}>
+            <Grid item md={6}>
+              <div className="gridItemA">
+                <div className="shiftAdmin">Good Morning,{admin}</div>
+                <div className="prettyText">
+                  <span className="prettySpan">
+                    Welcome to AbleLyf!Manage attendance with ease
+                  </span>
                 </div>
-                <div className="secondBox">
-                  <div className="firstCon">Students</div>
-                  <div className="secondCon">Under you</div>
-                  <div className="thirdCon">{studentsStrength}</div>
+                {/* <div className="accountDiv">
+                <span className="accountSpan">Account</span>
+              </div> */}
+                <div className="twoBoxes">
+                  <div className="firstBox">
+                    <div className="firstCon">Therapists</div>
+                    <div className="secondCon">Under you</div>
+                    <div className="thirdCon">{therapistsStrength}</div>
+                  </div>
+                  <div className="secondBox">
+                    <div className="firstCon">Students</div>
+                    <div className="secondCon">Under you</div>
+                    <div className="thirdCon">{studentsStrength}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Grid>
-          <Grid item md={6}>
-            <div className="gridItemB">
-              <div className="showDate">
-                <div className="monYr">{primaryDate}</div>
-                <div className="dashDays">
-                  {displayDays.length
-                    ? displayDays.map((data) => {
-                        return (
-                          <span
-                            className={
-                              primaryDate.split("-")[2] === data.shortDate
-                                ? "weekName setWeekName"
-                                : "weekName"
-                            }
-                          >
-                            <div className="deepOne">{data.shortDay}</div>
-                            <div className="deepTwo">{data.shortDate}</div>
-                          </span>
-                        );
-                      })
-                    : ""}
-                  {/* <span className="weekName">
+            </Grid>
+            <Grid item md={6}>
+              <div className="gridItemB">
+                <div className="showDate">
+                  <div className="monYr">{primaryDate}</div>
+                  <div className="dashDays">
+                    {displayDays.length
+                      ? displayDays.map((data) => {
+                          return (
+                            <span
+                              className={
+                                primaryDate.split("-")[2] === data.shortDate
+                                  ? "weekName setWeekName"
+                                  : "weekName"
+                              }
+                            >
+                              <div className="deepOne">{data.shortDay}</div>
+                              <div className="deepTwo">{data.shortDate}</div>
+                            </span>
+                          );
+                        })
+                      : ""}
+                    {/* <span className="weekName">
                     <div className="deepOne">SUN</div>
                     <div className="deepTwo">1</div>
                   </span>
@@ -273,79 +300,82 @@ export default function DashboardSection() {
                     <div className="deepOne">SAT</div>
                     <div className="deepTwo">7</div>
                   </span> */}
+                  </div>
                 </div>
-              </div>
-              <div className="boxesTwo">
-                <div className="boxesTwoA">
-                  <div className="pieceA">
-                    <div className="showPercent">
-                      <div className="percentSpan">
-                        {isNaN(therapistsPercentage)
-                          ? "0"
-                          : therapistsPercentage}
-                        %
+                <div className="boxesTwo">
+                  <div className="boxesTwoA">
+                    <div className="pieceA">
+                      <div className="showPercent">
+                        <div className="percentSpan">
+                          {isNaN(therapistsPercentage)
+                            ? "0"
+                            : Math.round(therapistsPercentage)}
+                          %
+                        </div>
+                      </div>
+                    </div>
+                    <div className="pieceB">
+                      <div className="whoType">Therapists</div>
+                      <div className="blindAttend">Attendance</div>
+                      <div className="noof">
+                        {presentTherapists.length}/{therapistsStrength}
                       </div>
                     </div>
                   </div>
-                  <div className="pieceB">
-                    <div className="whoType">Therapists</div>
-                    <div className="blindAttend">Attendance</div>
-                    <div className="noof">
-                      {presentStudents.length}/{therapistsStrength}
+                  <div className="boxesTwoB">
+                    <div className="pieceA">
+                      <div className="showPercent">
+                        <div className="percentSpan">
+                          {isNaN(studentsPercentage)
+                            ? "0"
+                            : Math.round(studentsPercentage)}
+                          %
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                <div className="boxesTwoB">
-                  <div className="pieceA">
-                    <div className="showPercent">
-                      <div className="percentSpan">
-                        {isNaN(studentsPercentage) ? "0" : studentsPercentage}%
+                    <div className="pieceB">
+                      <div className="whoType">Students</div>
+                      <div className="blindAttend">Attendance</div>
+                      <div className="noof">
+                        {presentStudents.length}/{studentsStrength}
                       </div>
                     </div>
                   </div>
-                  <div className="pieceB">
-                    <div className="whoType">Students</div>
-                    <div className="blindAttend">Attendance</div>
-                    <div className="noof">
-                      {presentStudents.length}/{studentsStrength}
+                  <div className="boxesTwoC">
+                    <div className="helpSupport">
+                      <div className="quesA">&#63;</div>
+                      <div className="quesB">&#63;</div>
+                      <div className="quesC">&#63;</div>
+                      <div className="qhpText">Help and Support</div>
                     </div>
                   </div>
                 </div>
-                <div className="boxesTwoC">
-                  <div className="helpSupport">
-                    <div className="quesA">&#63;</div>
-                    <div className="quesB">&#63;</div>
-                    <div className="quesC">&#63;</div>
-                    <div className="qhpText">Help and Support</div>
-                  </div>
-                </div>
               </div>
-            </div>
+            </Grid>
           </Grid>
-        </Grid>
-      </div>
-      <div className="gridB">
-        <Grid container columnSpacing={2}>
-          {entries.length ? (
-            <Grid item md={6}>
-              <div className="gridBitemB">
-                <div className="eventsTitle">Recent Entry</div>
-                <div className="eventsBox">
-                  {entries?.length
-                    ? entries.map((data, index) => {
-                        return (
-                          <div className="blackBox">
-                            <div className="boxA">{index + 1}</div>
-                            <div className="boxB">
-                              <div className="subA">{data.name}</div>
-                              <div className="subB">Therapist</div>
+        </div>
+        <div className="gridB">
+          <Grid container columnSpacing={2}>
+            {entries.length ? (
+              <Grid item md={6}>
+                <div className="gridBitemB">
+                  <div className="eventsTitle">Recent Entry</div>
+                  <div className="eventsBox">
+                    {entries?.length
+                      ? entries.map((data, index) => {
+                          return (
+                            <div className="blackBox">
+                              <div className="boxA">{index + 1}</div>
+                              <div className="boxB">
+                                <div className="subA">{data.name}</div>
+                                <div className="subB">Therapist</div>
+                              </div>
+                              <div className="boxC">{data.time}</div>
                             </div>
-                            <div className="boxC">{data.time}</div>
-                          </div>
-                        );
-                      })
-                    : ""}
-                  {/* <div className="blackBox">
+                          );
+                        })
+                      : ""}
+                    {/* <div className="blackBox">
                   <div className="boxA">1</div>
                   <div className="boxB">
                     <div className="subA">John Michael</div>
@@ -369,13 +399,13 @@ export default function DashboardSection() {
                   </div>
                   <div className="boxC">11.25 - 11.35</div>
                 </div> */}
+                  </div>
                 </div>
-              </div>
-            </Grid>
-          ) : (
-            ""
-          )}
-          {/* <Grid item md={6}>
+              </Grid>
+            ) : (
+              ""
+            )}
+            {/* <Grid item md={6}>
             <div className="gridBitemA">
               <div className="eventsTitle">Upcoming Events</div>
               <div className="eventsBox">
@@ -406,7 +436,8 @@ export default function DashboardSection() {
               </div>
             </div>
           </Grid> */}
-        </Grid>
+          </Grid>
+        </div>
       </div>
     </div>
   );

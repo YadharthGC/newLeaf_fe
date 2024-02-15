@@ -1,0 +1,26 @@
+#AddCameraPage {
+  .addCameraPage {
+  }
+  .camAddDiv {
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-top: 25px;
+  }
+  .detailsName {
+    // margin-top: 2%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .naming:has(.camAddSubmit) {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .namingB {
+    margin-top: 5%;
+  }
+  .addCameraPage {
+    background-color: #f6f8fb;
+    height: 100%;
+  }
+}

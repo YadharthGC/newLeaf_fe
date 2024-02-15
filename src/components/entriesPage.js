@@ -49,9 +49,9 @@ export default function EntriesPage() {
           let dataObj = res?.data?.message;
           console.log(dataObj);
           setUsers(dataObj.reverse());
-          setTimeout(async () => {
-            await handleEntryData();
-          }, 5000);
+          // setTimeout(async () => {
+          //   await handleEntryData();
+          // }, 5000);
         })
         .catch((err) => {
           console.log(err);

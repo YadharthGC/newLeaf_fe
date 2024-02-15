@@ -28,6 +28,8 @@ import { handleEmptyValues, themeObj } from "../commonFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import { CircularProgress, Divider, Modal } from "@mui/material";
 import { funLoading } from "../reactRedux/action";
+import AddCameraPage from "./addCameraPage";
+import AdvertisePage from "./advertisePage";
 
 export default function FileArea() {
   const theme = createTheme(themeObj);
@@ -350,6 +352,8 @@ export default function FileArea() {
                 <Route path="/register" element={<Register />} />
                 <Route path="/dashboard" element={<DashboardSection />} />
                 <Route path="/entries" element={<EntriesPage />} />
+                <Route path="/addad" element={<AdvertisePage />} />
+                <Route path="/addcamera" element={<AddCameraPage />} />
               </Routes>
               <div>
                 {/* <Button onClick={handleOpen}>Open modal</Button> */}
