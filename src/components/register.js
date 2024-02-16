@@ -29,7 +29,8 @@ import { useDispatch, useSelector } from "react-redux";
 import CloseSharpIcon from "@mui/icons-material/CloseSharp";
 import { handleEmptyValues, themeObj } from "../commonFunctions";
 import { funLoading } from "../reactRedux/action";
-// import * as faceapi from "face-api.js";
+import * as faceapi from "face-api.js";
+import { TroubleshootSharp } from "@mui/icons-material";
 // import {} from "../../public/models"
 
 export default function Register() {
@@ -87,6 +88,22 @@ export default function Register() {
       setVideoUpload("");
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [blink]);
+  useEffect(() => {
+    handleStart();
+  }, []);
+
+  let handleStart = async () => {
+    try {
+      // await faceapi.loadTinyFaceDetectorModel("/models");
+      // await faceapi.loadMtcnnModel("/models");
+      // await faceapi.loadFaceLandmarkModel("/models");
+      // await faceapi.loadFaceLandmarkTinyModel("/models");
+      // await faceapi.loadFaceRecognitionModel("/models");
+      // await faceapi.loadFaceExpressionModel("/models");
+    } catch (er) {
+      console.log(er);
+    }
+  };
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -165,10 +182,41 @@ export default function Register() {
     }
   };
 
+  const handleFaceDetect = async () => {
+    try {
+      let imgA = document.getElementById("photoA");
+      let imgB = document.getElementById("photoB");
+      let imgC = document.getElementById("photoC");
+      let proceed = true;
+
+      dispatch(funLoading(true));
+      await faceapi.loadSsdMobilenetv1Model("/models");
+      for (let i = 0; i < 3; i++) {
+        let el = i === 0 ? imgA : i === 1 ? imgB : i === 2 ? imgC : "";
+        let detections = await faceapi.detectAllFaces(el);
+        console.log(detections);
+        if (!detections.length) {
+          proceed = false;
+          break;
+        }
+      }
+      dispatch(funLoading(false));
+      return proceed;
+    } catch (err) {
+      console.log(err);
+      dispatch(funLoading(false));
+    }
+  };
+
   const handleSubmit = async () => {
     try {
       if (!name || !dob || !gender || !photoA || !photoB || !photoC) {
         alert("Fill all the neccessary fields");
+        return;
+      }
+      let faceDetect = await handleFaceDetect();
+      if (!faceDetect) {
+        alert("No face Detected");
         return;
       }
 
@@ -395,10 +443,16 @@ export default function Register() {
             <div className="regisImgs">
               <div className="imgA">
                 {photoA ? (
-                  <img className="demoImg presentImg" src={photoA} alt="demo" />
+                  <img
+                    className="demoImg presentImg"
+                    src={photoA}
+                    id="photoA"
+                    alt="demo"
+                  />
                 ) : (
                   <img className="demoImg" src={blankProfile} alt="demo" />
                 )}
+                {/* <canvas ref={photoA} /> */}
                 {photoA ? (
                   <div className="closeImgDiv">
                     <div className="closeImg">
@@ -416,10 +470,16 @@ export default function Register() {
               </div>
               <div className="imgB">
                 {photoB ? (
-                  <img className="demoImg presentImg" src={photoB} alt="demo" />
+                  <img
+                    className="demoImg presentImg"
+                    src={photoB}
+                    id="photoB"
+                    alt="demo"
+                  />
                 ) : (
                   <img className="demoImg" src={blankProfile} alt="demo" />
                 )}
+                {/* <canvas ref={photoB} /> */}
                 {photoB ? (
                   <div className="closeImgDiv">
                     <div className="closeImg">
@@ -437,10 +497,16 @@ export default function Register() {
               </div>
               <div className="imgC">
                 {photoC ? (
-                  <img className="demoImg presentImg" src={photoC} alt="demo" />
+                  <img
+                    className="demoImg presentImg"
+                    src={photoC}
+                    id="photoC"
+                    alt="demo"
+                  />
                 ) : (
                   <img className="demoImg" src={blankProfile} alt="demo" />
                 )}
+                {/* <canvas ref={photoC} /> */}
                 {photoC ? (
                   <div className="closeImgDiv">
                     <div className="closeImg">
