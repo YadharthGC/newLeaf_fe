@@ -30,6 +30,10 @@ import { CircularProgress, Divider, Modal } from "@mui/material";
 import { funLoading } from "../reactRedux/action";
 import AddCameraPage from "./addCameraPage";
 import AdvertisePage from "./advertisePage";
+import CrowdSection from "./crowdSection";
+import HeatMapPage from "./heatMapPage";
+import GraphicEqIcon from "@mui/icons-material/GraphicEq";
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 
 export default function FileArea() {
   const theme = createTheme(themeObj);
@@ -294,6 +298,72 @@ export default function FileArea() {
                   />
                 </ListItemButton>
               </ListItem>
+              <ListItem
+                onClick={() => {
+                  handleEmptyValues(dispatch);
+                  navigate("crowd");
+                }}
+                key={"crowd detection"}
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "black",
+                    }}
+                  >
+                    <GraphicEqIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    id="peopleText"
+                    primary={"Crwod Detection"}
+                    sx={{ opacity: open ? 1 : 0, color: "black" }}
+                  />
+                </ListItemButton>
+              </ListItem>
+              <ListItem
+                onClick={() => {
+                  handleEmptyValues(dispatch);
+                  navigate("heatmap");
+                }}
+                key={"HeatMap"}
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "black",
+                    }}
+                  >
+                    <LocalFireDepartmentIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    id="peopleText"
+                    primary={"HeatMap"}
+                    sx={{ opacity: open ? 1 : 0, color: "black" }}
+                  />
+                </ListItemButton>
+              </ListItem>
             </List>
             <Divider />
             <List>
@@ -354,6 +424,8 @@ export default function FileArea() {
                 <Route path="/entries" element={<EntriesPage />} />
                 <Route path="/addad" element={<AdvertisePage />} />
                 <Route path="/addcamera" element={<AddCameraPage />} />
+                <Route path="/crowd" element={<CrowdSection />} />
+                <Route path="/heatmap" element={<HeatMapPage />} />
               </Routes>
               <div>
                 {/* <Button onClick={handleOpen}>Open modal</Button> */}
