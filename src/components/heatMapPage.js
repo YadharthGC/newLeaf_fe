@@ -122,7 +122,7 @@ export default function HeatMapPage() {
         </div>
       </div>
       <div className="crowdDetectionSection">
-        <div className="allTextDiv videoDiv">
+        {/* <div className="allTextDiv videoDiv">
           <div className="userTextField videoSpace">
             <span className="addCamText">Add Camera</span>&nbsp;&nbsp;
             <VideoCallIcon
@@ -132,14 +132,14 @@ export default function HeatMapPage() {
               }}
             />
           </div>
-        </div>
+        </div> */}
         <div className="allTableDiv">
           <div className="allTableHead">
             <div className="headA entry">Image</div>
             <div className="headB entry">CamID</div>
             <div className="headD entry">Persons</div>
             <div className="headC entry">Timing</div>
-            {/* <div className="headE entry">Actions</div> */}
+            <div className="headE entry"></div>
           </div>
           <div className="allTableBody crowd">
             {showData?.length

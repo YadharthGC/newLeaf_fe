@@ -34,6 +34,8 @@ import CrowdSection from "./crowdSection";
 import HeatMapPage from "./heatMapPage";
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+import PsychologyIcon from "@mui/icons-material/Psychology";
+import BehaviourPage from "./behaviourPage";
 
 export default function FileArea() {
   const theme = createTheme(themeObj);
@@ -364,6 +366,39 @@ export default function FileArea() {
                   />
                 </ListItemButton>
               </ListItem>
+              <ListItem
+                onClick={() => {
+                  handleEmptyValues(dispatch);
+                  navigate("behaviour");
+                }}
+                key={"behaviour"}
+                disablePadding
+                sx={{ display: "block" }}
+              >
+                <ListItemButton
+                  sx={{
+                    minHeight: 48,
+                    justifyContent: open ? "initial" : "center",
+                    px: 2,
+                  }}
+                >
+                  <ListItemIcon
+                    sx={{
+                      minWidth: 0,
+                      mr: open ? 3 : "auto",
+                      justifyContent: "center",
+                      color: "black",
+                    }}
+                  >
+                    <PsychologyIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    id="peopleText"
+                    primary={"behaviour"}
+                    sx={{ opacity: open ? 1 : 0, color: "black" }}
+                  />
+                </ListItemButton>
+              </ListItem>
             </List>
             <Divider />
             <List>
@@ -426,6 +461,7 @@ export default function FileArea() {
                 <Route path="/addcamera" element={<AddCameraPage />} />
                 <Route path="/crowd" element={<CrowdSection />} />
                 <Route path="/heatmap" element={<HeatMapPage />} />
+                <Route path="/behaviour" element={<BehaviourPage />} />
               </Routes>
               <div>
                 {/* <Button onClick={handleOpen}>Open modal</Button> */}

@@ -112,7 +112,7 @@ export default function CrowdSection() {
         </div>
       </div>
       <div className="crowdDetectionSection">
-        <div className="allTextDiv videoDiv">
+        {/* <div className="allTextDiv videoDiv">
           <div className="userTextField videoSpace">
             <span className="addCamText">Add Camera</span>&nbsp;&nbsp;
             <VideoCallIcon
@@ -122,7 +122,7 @@ export default function CrowdSection() {
               }}
             />
           </div>
-        </div>
+        </div> */}
         <div className="allTableDiv">
           <div className="allTableHead">
             <div className="headA entry">Image</div>

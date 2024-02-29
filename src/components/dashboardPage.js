@@ -341,14 +341,14 @@ export default function DashboardSection() {
                       </div>
                     </div>
                   </div>
-                  <div className="boxesTwoC">
+                  {/* <div className="boxesTwoC">
                     <div className="helpSupport">
                       <div className="quesA">&#63;</div>
                       <div className="quesB">&#63;</div>
                       <div className="quesC">&#63;</div>
                       <div className="qhpText">Help and Support</div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </Grid>
