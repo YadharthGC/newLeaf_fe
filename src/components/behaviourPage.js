@@ -33,14 +33,13 @@ export default function BehaviourPage() {
         </div>
       </div>
       <div className="behaviourSection">
-        {/* <div className="allTextDiv">
+        <div className="allTextDiv">
           <div className="userTextField">
             <TextField
               id="standard-basic"
               label="Search"
               variant="standard"
-              onChange={(e) => {
-              }}
+              onChange={(e) => {}}
             />
           </div>
         </div>
@@ -61,8 +60,7 @@ export default function BehaviourPage() {
                       alt={"none"}
                       src={blank}
                       className="entryUserImg crowd"
-                      onClick={() => {
-                      }}
+                      onClick={() => {}}
                     />
                   </div>
                   <div className="camAns">{data.camID}</div>
@@ -77,8 +75,8 @@ export default function BehaviourPage() {
               );
             })}
           </div>
-        </div> */}
-        <div className="gridDiv">
+        </div>
+        {/* <div className="gridDiv">
           <Grid container columnSpacing={1}>
             <Grid item md={9}>
               <div className="notifications">
@@ -104,7 +102,7 @@ export default function BehaviourPage() {
               <div className="notifications"></div>
             </Grid>
           </Grid>
-        </div>
+        </div> */}
       </div>
     </div>
   );

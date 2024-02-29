@@ -1,107 +1,107 @@
 #behaviourPage {
-  //   .behaviourImg {
-  //     width: 250px;
-  //     height: 200px;
-  //     object-fit: cover;
-  //   }
-
-  //   .allTableHead {
-  //     padding-top: 15px;
-  //     padding-right: 25px;
-  //     padding-left: 25px;
-  //     padding-bottom: 10px;
-  //     display: flex;
-  //     align-items: center;
-  //     border-bottom: solid 1px gray;
-  //     font-weight: bolder;
-  //   }
-  //   .imgTitle {
-  //     flex: 0.3;
-  //   }
-  //   .idTitle {
-  //     flex: 0.1;
-  //     text-align: center;
-  //   }
-  //   .personTitle {
-  //     flex: 0.2;
-  //     text-align: center;
-  //   }
-  //   .timeTitle {
-  //     flex: 0.2;
-  //     text-align: center;
-  //   }
-  //   .actionTitle {
-  //     flex: 0.2;
-  //     text-align: center;
-  //   }
-
-  //   .allTableBody {
-  //     height: 79vh;
-  //     overflow: scroll;
-  //     overflow-x: hidden;
-  //     border-bottom: solid 1px lightgray;
-  //   }
-
-  //   .allTableBody::-webkit-scrollbar {
-  //     width: 5px;
-  //   }
-
-  //   /* Track */
-  //   .allTableBody::-webkit-scrollbar-track {
-  //     background: lightgray;
-  //   }
-
-  //   /* Handle */
-  //   .allTableBody::-webkit-scrollbar-thumb {
-  //     background: blue;
-  //     width: 7px;
-  //   }
-
-  //   .bodyPart {
-  //     padding-top: 5px;
-  //     padding-right: 25px;
-  //     padding-left: 25px;
-  //     padding-bottom: 5px;
-  //     display: flex;
-  //     align-items: center;
-  //     border-bottom: solid 1px gray;
-  //   }
-  //   .bodyPart:hover {
-  //     background-color: white;
-  //   }
-  //   .imgAns {
-  //     flex: 0.3;
-  //   }
-  //   .camAns {
-  //     flex: 0.1;
-  //     text-align: center;
-  //   }
-  //   .nameAns {
-  //     flex: 0.2;
-  //     text-align: center;
-  //   }
-  //   .timeAns {
-  //     flex: 0.2;
-  //     text-align: center;
-  //   }
-  //   .actionAns {
-  //     flex: 0.2;
-  //     text-align: center;
-  //   }
-  .gridDiv {
-    padding: 0px 10px;
+  .behaviourImg {
+    width: 250px;
+    height: 200px;
+    object-fit: cover;
   }
-  .notifications {
-    border: solid 1px black;
-  }
-  .bodyCon {
+
+  .allTableHead {
+    padding-top: 15px;
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-bottom: 10px;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    border-bottom: solid 1px gray;
+    font-weight: bolder;
   }
-  .accountGrp {
+  .imgTitle {
+    flex: 0.3;
+  }
+  .idTitle {
+    flex: 0.1;
+    text-align: center;
+  }
+  .personTitle {
+    flex: 0.2;
+    text-align: center;
+  }
+  .timeTitle {
+    flex: 0.2;
+    text-align: center;
+  }
+  .actionTitle {
+    flex: 0.2;
+    text-align: center;
+  }
+
+  .allTableBody {
+    height: 79vh;
+    overflow: scroll;
+    overflow-x: hidden;
+    border-bottom: solid 1px lightgray;
+  }
+
+  .allTableBody::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  /* Track */
+  .allTableBody::-webkit-scrollbar-track {
+    background: lightgray;
+  }
+
+  /* Handle */
+  .allTableBody::-webkit-scrollbar-thumb {
+    background: blue;
+    width: 7px;
+  }
+
+  .bodyPart {
+    padding-top: 5px;
+    padding-right: 25px;
+    padding-left: 25px;
+    padding-bottom: 5px;
     display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    border-bottom: solid 1px gray;
   }
+  .bodyPart:hover {
+    background-color: white;
+  }
+  .imgAns {
+    flex: 0.3;
+  }
+  .camAns {
+    flex: 0.1;
+    text-align: center;
+  }
+  .nameAns {
+    flex: 0.2;
+    text-align: center;
+  }
+  .timeAns {
+    flex: 0.2;
+    text-align: center;
+  }
+  .actionAns {
+    flex: 0.2;
+    text-align: center;
+  }
+  // .gridDiv {
+  //   padding: 0px 10px;
+  // }
+  // .notifications {
+  //   border: solid 1px black;
+  // }
+  // .bodyCon {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: flex-start;
+  // }
+  // .accountGrp {
+  //   display: flex;
+  //   justify-content: space-between;
+  //   align-items: flex-start;
+  // }
 }
